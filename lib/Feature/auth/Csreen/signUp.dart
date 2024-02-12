@@ -13,7 +13,7 @@ class SignupPage extends StatelessWidget {
       Directionality(
         textDirection: TextDirection.rtl,
         child: Scaffold(
-          backgroundColor: Color.fromARGB(255, 165, 165, 154),
+          backgroundColor:Color.fromARGB(255, 228, 228, 226),
           body: SingleChildScrollView(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 40),
