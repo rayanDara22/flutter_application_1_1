@@ -5,28 +5,24 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return
-   
-       Directionality(
-        textDirection: TextDirection.rtl,
-        child: Scaffold(
-          backgroundColor: Color.fromARGB(255, 228, 228, 226),
-          body: Container(
-            margin: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-             
-                _header(context),
-                _inputField(context),
-                _forgotPassword(context),
-                _signup(context),
-              ],
-            ),
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        backgroundColor: Color.fromARGB(255, 0, 0, 0),
+        body: Container(
+          margin: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _header(context),
+              _inputField(context),
+              _forgotPassword(context),
+              _signup(context),
+            ],
           ),
         ),
-      );
-    
+      ),
+    );
   }
 
   _header(context) {
@@ -42,7 +38,7 @@ class LoginPage extends StatelessWidget {
         ),
         Text(
           "بۆ چونە ژوورەوە تکایە زانیاریەکان پر بکەرەوە",
-          style: TextStyle(color: Colors.black , fontSize: 15) ,
+          style: TextStyle(color: Colors.black, fontSize: 15),
         ),
       ],
     );
@@ -69,7 +65,7 @@ class LoginPage extends StatelessWidget {
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(18),
                 borderSide: BorderSide.none),
-            fillColor:  Color.fromARGB(255, 207, 226, 233),
+            fillColor: Color.fromARGB(255, 207, 226, 233),
             filled: true,
             prefixIcon: const Icon(Icons.password),
           ),
@@ -81,11 +77,11 @@ class LoginPage extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             shape: const StadiumBorder(),
             padding: const EdgeInsets.symmetric(vertical: 16),
-            backgroundColor:  Color.fromARGB(255, 29, 109, 129),
+            backgroundColor: Color.fromARGB(255, 29, 109, 129),
           ),
           child: const Text(
             "چوونە ژوورەوە",
-            style: TextStyle(fontSize: 20 , color: Colors.white),
+            style: TextStyle(fontSize: 20, color: Colors.white),
           ),
         )
       ],
@@ -97,7 +93,7 @@ class LoginPage extends StatelessWidget {
       onPressed: () {},
       child: const Text(
         " بیرچوونەوەی وشەی نهێنی",
-        style: TextStyle(color: Color.fromARGB(255, 0, 0, 0),fontSize: 20),
+        style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 20),
       ),
     );
   }
@@ -114,7 +110,8 @@ class LoginPage extends StatelessWidget {
             onPressed: () {},
             child: const Text(
               "خۆتۆمارکرد",
-              style: TextStyle(color: Color.fromARGB(255, 197, 38, 38),fontSize: 20),
+              style: TextStyle(
+                  color: Color.fromARGB(255, 197, 38, 38), fontSize: 20),
             ))
       ],
     );
