@@ -29,7 +29,7 @@ class LoginPage extends StatelessWidget {
     return const Column(
       children: [
         Text(
-          "لەچیggای",
+          "بەخێربێیت",
           style: TextStyle(
               fontFamily: "rudaw",
               fontSize: 40,
