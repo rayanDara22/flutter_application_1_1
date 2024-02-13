@@ -8,7 +8,7 @@ class LoginPage extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor: Color.fromARGB(255, 0, 0, 0),
+        backgroundColor:Color.fromARGB(255, 228, 228, 226),
         body: Container(
           margin: const EdgeInsets.all(24),
           child: Column(
@@ -79,6 +79,7 @@ class LoginPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 16),
             backgroundColor: Color.fromARGB(255, 29, 109, 129),
           ),
+          
           child: const Text(
             "چوونە ژوورەوە",
             style: TextStyle(fontSize: 20, color: Colors.white),
