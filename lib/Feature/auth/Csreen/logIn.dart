@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // barprsa la link krdni appakaman lagal firebaseakaman aw methodanai tyaya ka paiwandi ba loginawa haya
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+  LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        backgroundColor:Color.fromARGB(255, 228, 228, 226),
+        backgroundColor: Color.fromARGB(255, 228, 228, 226),
         body: Container(
           margin: const EdgeInsets.all(24),
           child: Column(
@@ -26,7 +27,7 @@ class LoginPage extends StatelessWidget {
   }
 
   _header(context) {
-    return const Column(
+    return Column(
       children: [
         Text(
           "بەخێربێیت",
@@ -58,7 +59,7 @@ class LoginPage extends StatelessWidget {
               filled: true,
               prefixIcon: const Icon(Icons.person)),
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: 10),
         TextField(
           decoration: InputDecoration(
             hintText: "وشەی نهێنی",
@@ -71,7 +72,7 @@ class LoginPage extends StatelessWidget {
           ),
           obscureText: true,
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: 10),
         ElevatedButton(
           onPressed: () {},
           style: ElevatedButton.styleFrom(
@@ -79,8 +80,7 @@ class LoginPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 16),
             backgroundColor: Color.fromARGB(255, 29, 109, 129),
           ),
-          
-          child: const Text(
+          child: Text(
             "چوونە ژوورەوە",
             style: TextStyle(fontSize: 20, color: Colors.white),
           ),
@@ -92,7 +92,7 @@ class LoginPage extends StatelessWidget {
   _forgotPassword(context) {
     return TextButton(
       onPressed: () {},
-      child: const Text(
+      child: Text(
         " بیرچوونەوەی وشەی نهێنی",
         style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 20),
       ),
@@ -103,7 +103,7 @@ class LoginPage extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text(
+        Text(
           "ئەکاونتت نییە؟ ",
           style: TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 20),
         ),
