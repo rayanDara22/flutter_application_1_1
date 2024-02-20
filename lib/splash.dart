@@ -1,11 +1,12 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/Feature/auth/Csreen/auth.dart';
-// import 'package:flutter_application_1_1/Feature/auth/Csreen/auth.dart';
+import 'package:flutter_application_1/login1.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+  SplashScreen({super.key});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -15,13 +16,15 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 1), () {
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Auth(),
-          ));
-    });
+    Timer(
+      Duration(seconds: 2),
+      () => Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoginPage(),
+        ),
+      ),
+    );
   }
 
   @override

@@ -1,5 +1,6 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // barprsa la link krdni appakaman lagal firebaseakaman aw methodanai tyaya ka paiwandi ba loginawa haya
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -11,7 +12,7 @@ class LoginPage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Color.fromARGB(255, 228, 228, 226),
         body: Container(
-          margin: const EdgeInsets.all(24),
+          margin: EdgeInsets.all(24),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -50,6 +51,7 @@ class LoginPage extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         TextField(
+          obscureText: true,
           decoration: InputDecoration(
               hintText: "ناوی بەکارهینەر",
               border: OutlineInputBorder(
@@ -57,7 +59,7 @@ class LoginPage extends StatelessWidget {
                   borderSide: BorderSide.none),
               fillColor: Color.fromARGB(255, 207, 226, 233),
               filled: true,
-              prefixIcon: const Icon(Icons.person)),
+              prefixIcon: Icon(Icons.person)),
         ),
         SizedBox(height: 10),
         TextField(
@@ -68,7 +70,7 @@ class LoginPage extends StatelessWidget {
                 borderSide: BorderSide.none),
             fillColor: Color.fromARGB(255, 207, 226, 233),
             filled: true,
-            prefixIcon: const Icon(Icons.password),
+            prefixIcon: Icon(Icons.password),
           ),
           obscureText: true,
         ),
@@ -76,8 +78,8 @@ class LoginPage extends StatelessWidget {
         ElevatedButton(
           onPressed: () {},
           style: ElevatedButton.styleFrom(
-            shape: const StadiumBorder(),
-            padding: const EdgeInsets.symmetric(vertical: 16),
+            shape: StadiumBorder(),
+            padding: EdgeInsets.symmetric(vertical: 16),
             backgroundColor: Color.fromARGB(255, 29, 109, 129),
           ),
           child: Text(
@@ -109,7 +111,7 @@ class LoginPage extends StatelessWidget {
         ),
         TextButton(
             onPressed: () {},
-            child: const Text(
+            child: Text(
               "خۆتۆمارکرد",
               style: TextStyle(
                   color: Color.fromARGB(255, 197, 38, 38), fontSize: 20),
