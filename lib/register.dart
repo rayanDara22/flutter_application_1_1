@@ -24,7 +24,7 @@ class _RegisterState extends State<Register> {
       new TextEditingController();
   final TextEditingController name = new TextEditingController();
   final TextEditingController emailController = new TextEditingController();
-  final TextEditingController mobile = new TextEditingController();
+  // final TextEditingController mobile = new TextEditingController();
   bool _isObscure = true;
   bool _isObscure2 = true;
   File? file;
@@ -290,7 +290,7 @@ class _RegisterState extends State<Register> {
                           height: 20,
                         ),
                         Text(
-                          "WEBFUN",
+                          "home",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 30,
@@ -309,6 +309,7 @@ class _RegisterState extends State<Register> {
     );
   }
 
+/////nardni data bo firebase
   void signUp(String email, String password, String rool) async {
     CircularProgressIndicator();
     if (_formkey.currentState!.validate()) {
