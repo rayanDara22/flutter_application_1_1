@@ -55,12 +55,11 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(30.0),
-                      child: Image.network(
-                          'https://image.bmctv.krd/root/root/images/132042020_01.png'),
-                    ),
+                        padding: const EdgeInsets.all(30.0),
+                        child: Container(
+                            height: 200, child: Image.asset("imgs/logo.png"))),
                     Padding(
-                      padding: const EdgeInsets.all(30.0),
+                      padding: const EdgeInsets.all(10.0),
                       child: TextFormField(
                         controller: emailController,
                         decoration: InputDecoration(
@@ -72,11 +71,11 @@ class _LoginPageState extends State<LoginPage> {
                               left: 14.0, bottom: 8.0, top: 8.0),
                           focusedBorder: OutlineInputBorder(
                             borderSide: new BorderSide(color: Colors.white),
-                            borderRadius: new BorderRadius.circular(10),
+                            borderRadius: new BorderRadius.circular(20),
                           ),
                           enabledBorder: UnderlineInputBorder(
                             borderSide: new BorderSide(color: Colors.white),
-                            borderRadius: new BorderRadius.circular(10),
+                            borderRadius: new BorderRadius.circular(20),
                           ),
                         ),
                         validator: (value) {
@@ -97,10 +96,10 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(30.0),
+                      padding: const EdgeInsets.all(10.0),
                       child: TextFormField(
                         controller: passwordController,
                         obscureText: _isObscure3,
@@ -119,14 +118,14 @@ class _LoginPageState extends State<LoginPage> {
                           hintText: 'Password',
                           enabled: true,
                           contentPadding: const EdgeInsets.only(
-                              left: 14.0, bottom: 8.0, top: 15.0),
+                              left: 14.0, bottom: 14.0, top: 15.0),
                           focusedBorder: OutlineInputBorder(
                             borderSide: new BorderSide(color: Colors.white),
-                            borderRadius: new BorderRadius.circular(10),
+                            borderRadius: new BorderRadius.circular(20),
                           ),
                           enabledBorder: UnderlineInputBorder(
                             borderSide: new BorderSide(color: Colors.white),
-                            borderRadius: new BorderRadius.circular(10),
+                            borderRadius: new BorderRadius.circular(20),
                           ),
                         ),
                         validator: (value) {
@@ -146,53 +145,63 @@ class _LoginPageState extends State<LoginPage> {
                         keyboardType: TextInputType.emailAddress,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(30.0),
-                      child: MaterialButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20.0))),
-                        elevation: 5.0,
-                        height: 40,
-                        onPressed: () {
-                          setState(() {
-                            visible = true;
-                          });
-                          signIn(emailController.text, passwordController.text);
-                        },
-                        child: Text(
-                          "Login",
-                          style: TextStyle(fontSize: 20, color: Colors.white),
-                        ),
-                        color: Color.fromARGB(255, 29, 109, 129),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(30.0),
-                      child: MaterialButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20.0))),
-                        elevation: 5.0,
-                        height: 40,
-                        onPressed: () {
-                          CircularProgressIndicator();
-
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Register(),
+                    Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: MaterialButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(6.0))),
+                              elevation: 5.0,
+                              height: 60,
+                              onPressed: () {
+                                setState(() {
+                                  visible = true;
+                                });
+                                signIn(emailController.text,
+                                    passwordController.text);
+                              },
+                              child: Text(
+                                "Login",
+                                style: TextStyle(
+                                    fontSize: 20, color: Colors.white),
+                              ),
+                              color: Color.fromARGB(255, 29, 109, 129),
                             ),
-                          );
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "Register",
-                            style: TextStyle(fontSize: 22, color: Colors.white),
                           ),
-                        ),
-                        color: Color.fromARGB(255, 29, 109, 129),
+                          Padding(
+                            padding: const EdgeInsets.all(30.0),
+                            child: MaterialButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(6.0))),
+                              elevation: 5.0,
+                              height: 60,
+                              onPressed: () {
+                                CircularProgressIndicator();
+
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => Register(),
+                                  ),
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Register",
+                                  style: TextStyle(
+                                      fontSize: 22, color: Colors.white),
+                                ),
+                              ),
+                              color: Color.fromARGB(255, 29, 109, 129),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],

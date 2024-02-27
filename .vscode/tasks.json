@@ -1,0 +1,12 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+	  {
+		"label": "flutter: build dart entrypoint",
+		"type": "flutter",
+		"command": "build",
+		"args": ["lib/main.dart"]
+	  }
+	]
+  }
+  

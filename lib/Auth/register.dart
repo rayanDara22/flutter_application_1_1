@@ -81,23 +81,31 @@ class _RegisterState extends State<Register> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Image.network(
-                              'https://image.bmctv.krd/root/root/images/132042020_01.png'),
-                        ),
+                            padding: const EdgeInsets.all(20.0),
+                            child: Container(
+                                height: 150,
+                                child: Image.asset("imgs/logo.png"))),
 
                         SizedBox(
-                          height: 50,
+                          height: 10,
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(10.0),
+                          padding: const EdgeInsets.all(4.0),
                           child: TextFormField(
                             controller: firstNameController,
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.white,
-                              hintText: 'First Name',
-                              // Add other decoration properties as needed
+                              hintText: 'Full Name',
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: new BorderSide(
+                                    color: Color.fromARGB(255, 26, 128, 122)),
+                                borderRadius: new BorderRadius.circular(20),
+                              ),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: new BorderSide(color: Colors.white),
+                                borderRadius: new BorderRadius.circular(20),
+                              ),
                             ),
                             validator: (value) {
                               // Add validation logic for first name
@@ -106,9 +114,9 @@ class _RegisterState extends State<Register> {
                           ),
                         ),
 // Add a SizedBox for spacing
-                        SizedBox(height: 20),
+                        SizedBox(height: 10),
                         Padding(
-                          padding: const EdgeInsets.all(10.0),
+                          padding: const EdgeInsets.all(4.0),
                           child: TextFormField(
                             controller: emailController,
                             decoration: InputDecoration(
@@ -144,10 +152,10 @@ class _RegisterState extends State<Register> {
                           ),
                         ),
                         SizedBox(
-                          height: 20,
+                          height: 10,
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(10.0),
+                          padding: const EdgeInsets.all(4.0),
                           child: TextFormField(
                             obscureText: _isObscure,
                             controller: passwordController,
@@ -192,10 +200,10 @@ class _RegisterState extends State<Register> {
                           ),
                         ),
                         SizedBox(
-                          height: 20,
+                          height: 10,
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(10.0),
+                          padding: const EdgeInsets.all(4.0),
                           child: TextFormField(
                             obscureText: _isObscure2,
                             controller: confirmpassController,
@@ -236,15 +244,15 @@ class _RegisterState extends State<Register> {
                           ),
                         ),
                         SizedBox(
-                          height: 20,
+                          height: 10,
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(4.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                "Rool : ",
+                                "Roll : ",
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -282,7 +290,7 @@ class _RegisterState extends State<Register> {
                           ),
                         ),
                         SizedBox(
-                          height: 20,
+                          height: 10,
                         ),
                         Padding(
                           padding: const EdgeInsets.all(10.0),

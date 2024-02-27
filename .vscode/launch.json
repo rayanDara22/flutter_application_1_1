@@ -1,15 +1,28 @@
-
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    {
-        "version": "0.2.0",
-        "configurations": [
-            {
-                "name": "Flutter",
-                "request": "launch",
-                "type": "dart",
-                "program": "lib/main.dart",
-            }
-        ]
-    }
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Flutter",
+        "request": "launch",
+        "type": "dart",
+        "program": "lib/main.dart",
+        "flutterMode": "debug",
+        "args": [],
+        "cwd": "${workspaceFolder}",
+        "sourceFiles": ["lib/**/*.dart"],
+        "environment": {},
+        "preLaunchTask": "flutter: build dart entrypoint"
+      },
+      {
+        "name": "Flutter Test",
+        "request": "launch",
+        "type": "dart",
+        "program": "test",
+        "args": ["-r", "expanded"],
+        "cwd": "${workspaceFolder}",
+        "sourceFiles": ["test/**/*.dart"],
+        "pubTest": true
+      }
+    ]
+  }
+  
