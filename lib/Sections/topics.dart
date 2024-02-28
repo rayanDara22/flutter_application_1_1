@@ -47,7 +47,7 @@ class _TopicPState extends State<TopicP> {
         backgroundColor: Color.fromARGB(255, 167, 20, 20),
         title: Center(
             child: Text(
-          "Home",
+          "Teachers",
           style: TextStyle(color: Colors.white),
         )),
         actions: [

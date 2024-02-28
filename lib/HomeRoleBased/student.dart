@@ -19,7 +19,7 @@ class _StudentState extends State<Student> {
         backgroundColor: Color.fromARGB(255, 167, 20, 20),
         title: Center(
             child: Text(
-          "Teacher Home Page",
+          "Student Home Page",
           style: TextStyle(
             color: Colors.white,
           ),
@@ -46,8 +46,6 @@ class _StudentState extends State<Student> {
               padding: EdgeInsets.all(16),
               children: [
                 _buildCard(context, 'Topic', Icons.topic_outlined,
-                    onPressed: () {}),
-                _buildCard(context, 'Registration', Icons.app_registration,
                     onPressed: () {}),
                 _buildCard(context, 'Examination', Icons.mark_as_unread,
                     onPressed: () {}),

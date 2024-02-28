@@ -12,7 +12,10 @@ class TeacherTopicsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Topics'),
+        title: Text(
+          'Teacher Topics',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
@@ -81,29 +84,40 @@ class TopicCard extends StatefulWidget {
 }
 
 class _TopicCardState extends State<TopicCard> {
-  bool applyChecked = false;
+  bool requestSubmitted = false;
 
+  // Function to handle the "Apply to this topic" button click
   void applyToTopic() async {
-    // Get the current user's name from Firebase Authentication
-    String? studentName = getCurrentUserName();
+    // Retrieve the current user's email
+    User? user = FirebaseAuth.instance.currentUser;
+    String userEmail = user?.email ?? '';
 
-    if (studentName != null) {
-      // Create a student application object
-      StudentApplication application = StudentApplication(
-        studentName: studentName,
-        topicName: widget.topicDetails.topicName,
-        teacherId: widget.teacherId,
-      );
-
-      // Add the student application to the 'applications' collection
-      await ApplicationService().applyToTopic(application);
-
-      // You might want to perform additional actions after applying
-      print('Applied to topic: ${widget.topicDetails.topicName}');
-    } else {
-      // Handle the case where the user's name is not available
-      print('Unable to retrieve user name.');
+    // Check if the request has already been submitted by the student
+    if (requestSubmitted) {
+      showAlertDialog(context, 'Request Already Submitted',
+          'You have already submitted a request for this topic.');
+      return;
     }
+
+    // Prepare data to be added to the "requests" collection
+    Map<String, dynamic> requestData = {
+      'studentEmail': userEmail,
+      'teacherId': widget.teacherId,
+      'topicName': widget.topicDetails.topicName,
+      'status': 'Pending', // You can set an initial status
+    };
+
+    // Add data to the "requests" collection in Firebase
+    await FirebaseFirestore.instance.collection('requests').add(requestData);
+
+    // Set the flag to true indicating that the request has been submitted
+    setState(() {
+      requestSubmitted = true;
+    });
+
+    // Display a success message or perform any other actions
+    showAlertDialog(
+        context, 'Request Submitted', 'Your request has been submitted.');
   }
 
   @override
@@ -153,47 +167,25 @@ class _TopicCardState extends State<TopicCard> {
       ),
     );
   }
-}
 
-class StudentApplication {
-  final String studentName;
-  final String topicName;
-  final String teacherId;
-
-  StudentApplication({
-    required this.studentName,
-    required this.topicName,
-    required this.teacherId,
-  });
-
-  factory StudentApplication.fromDocument(QueryDocumentSnapshot doc) {
-    return StudentApplication(
-      studentName: (doc['studentName'] ?? '').toString(),
-      topicName: (doc['topicName'] ?? '').toString(),
-      teacherId: (doc['teacherId'] ?? '').toString(),
+  // Function to show an alert dialog
+  void showAlertDialog(BuildContext context, String title, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
     );
   }
-}
-
-class ApplicationService {
-  final CollectionReference applicationsCollection =
-      FirebaseFirestore.instance.collection('applications');
-
-  Future<void> applyToTopic(StudentApplication application) async {
-    try {
-      await applicationsCollection.add({
-        'studentName': application.studentName,
-        'topicName': application.topicName,
-        'teacherId': application.teacherId,
-      });
-      print('Application added successfully');
-    } catch (e) {
-      print('Error adding application: $e');
-    }
-  }
-}
-
-String? getCurrentUserName() {
-  User? user = FirebaseAuth.instance.currentUser;
-  return user?.displayName;
 }
