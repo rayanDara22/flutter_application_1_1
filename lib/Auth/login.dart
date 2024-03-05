@@ -15,10 +15,11 @@ class _LoginPageState extends State<LoginPage> {
   bool _isObscure3 = true;
   bool visible = false;
   final _formkey = GlobalKey<FormState>();
-  final TextEditingController emailController = new TextEditingController();
-  final TextEditingController passwordController = new TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   final _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,14 +34,15 @@ class _LoginPageState extends State<LoginPage> {
         centerTitle: true,
         flexibleSpace: Container(
           decoration: BoxDecoration(
-              gradient: LinearGradient(
-            colors: [
-              const Color.fromARGB(255, 207, 226, 233),
-              Color.fromARGB(255, 167, 20, 20)
-            ],
-            begin: Alignment.bottomCenter,
-            end: Alignment.topCenter,
-          )),
+            gradient: LinearGradient(
+              colors: [
+                const Color.fromARGB(255, 207, 226, 233),
+                Color.fromARGB(255, 167, 20, 20)
+              ],
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+            ),
+          ),
         ),
       ),
       body: Container(
@@ -55,9 +57,12 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Padding(
-                        padding: const EdgeInsets.all(30.0),
-                        child: Container(
-                            height: 200, child: Image.asset("imgs/logo.png"))),
+                      padding: const EdgeInsets.all(30.0),
+                      child: Container(
+                        height: 200,
+                        child: Image.asset("imgs/logo.png"),
+                      ),
+                    ),
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: TextFormField(
@@ -68,26 +73,28 @@ class _LoginPageState extends State<LoginPage> {
                           hintText: 'Email',
                           enabled: true,
                           contentPadding: const EdgeInsets.only(
-                              left: 14.0, bottom: 8.0, top: 8.0),
+                            left: 14.0,
+                            bottom: 8.0,
+                            top: 8.0,
+                          ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: new BorderSide(color: Colors.white),
-                            borderRadius: new BorderRadius.circular(20),
+                            borderSide: BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(20),
                           ),
                           enabledBorder: UnderlineInputBorder(
-                            borderSide: new BorderSide(color: Colors.white),
-                            borderRadius: new BorderRadius.circular(20),
+                            borderSide: BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(20),
                           ),
                         ),
                         validator: (value) {
-                          if (value!.length == 0) {
-                            return "Email cannot be empty";
+                          if (value!.isEmpty) {
+                            return 'Email cannot be empty';
                           }
                           if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
                               .hasMatch(value)) {
-                            return ("Please enter a valid email");
-                          } else {
-                            return null;
+                            return 'Please enter a valid email';
                           }
+                          return null;
                         },
                         onSaved: (value) {
                           emailController.text = value!;
@@ -105,39 +112,44 @@ class _LoginPageState extends State<LoginPage> {
                         obscureText: _isObscure3,
                         decoration: InputDecoration(
                           suffixIcon: IconButton(
-                              icon: Icon(_isObscure3
+                            icon: Icon(
+                              _isObscure3
                                   ? Icons.visibility
-                                  : Icons.visibility_off),
-                              onPressed: () {
-                                setState(() {
-                                  _isObscure3 = !_isObscure3;
-                                });
-                              }),
+                                  : Icons.visibility_off,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isObscure3 = !_isObscure3;
+                              });
+                            },
+                          ),
                           filled: true,
                           fillColor: Colors.white,
                           hintText: 'Password',
                           enabled: true,
                           contentPadding: const EdgeInsets.only(
-                              left: 14.0, bottom: 14.0, top: 15.0),
+                            left: 14.0,
+                            bottom: 14.0,
+                            top: 15.0,
+                          ),
                           focusedBorder: OutlineInputBorder(
-                            borderSide: new BorderSide(color: Colors.white),
-                            borderRadius: new BorderRadius.circular(20),
+                            borderSide: BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(20),
                           ),
                           enabledBorder: UnderlineInputBorder(
-                            borderSide: new BorderSide(color: Colors.white),
-                            borderRadius: new BorderRadius.circular(20),
+                            borderSide: BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(20),
                           ),
                         ),
                         validator: (value) {
-                          RegExp regex = new RegExp(r'^.{6,}$');
+                          RegExp regex = RegExp(r'^.{6,}$');
                           if (value!.isEmpty) {
-                            return "Password cannot be empty";
+                            return 'Password cannot be empty';
                           }
                           if (!regex.hasMatch(value)) {
-                            return ("please enter valid password min. 6 character");
-                          } else {
-                            return null;
+                            return 'Please enter a valid password (min. 6 characters)';
                           }
+                          return null;
                         },
                         onSaved: (value) {
                           passwordController.text = value!;
@@ -153,21 +165,26 @@ class _LoginPageState extends State<LoginPage> {
                             padding: const EdgeInsets.all(10.0),
                             child: MaterialButton(
                               shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(6.0))),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(6.0)),
+                              ),
                               elevation: 5.0,
                               height: 60,
                               onPressed: () {
                                 setState(() {
                                   visible = true;
                                 });
-                                signIn(emailController.text,
-                                    passwordController.text);
+                                signIn(
+                                  emailController.text,
+                                  passwordController.text,
+                                );
                               },
                               child: Text(
-                                "Login",
+                                'Login',
                                 style: TextStyle(
-                                    fontSize: 20, color: Colors.white),
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                ),
                               ),
                               color: Color.fromARGB(255, 29, 109, 129),
                             ),
@@ -176,8 +193,9 @@ class _LoginPageState extends State<LoginPage> {
                             padding: const EdgeInsets.all(30.0),
                             child: MaterialButton(
                               shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(6.0))),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(6.0)),
+                              ),
                               elevation: 5.0,
                               height: 60,
                               onPressed: () {
@@ -193,9 +211,11 @@ class _LoginPageState extends State<LoginPage> {
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
-                                  "Register",
+                                  'Register',
                                   style: TextStyle(
-                                      fontSize: 22, color: Colors.white),
+                                    fontSize: 22,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                               color: Color.fromARGB(255, 29, 109, 129),
@@ -214,7 +234,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-//bo authentication
   void routeBasedOnUserRole(String role) {
     if (role == 'Student') {
       Navigator.pushReplacement(
@@ -236,14 +255,12 @@ class _LoginPageState extends State<LoginPage> {
 
     if (user != null) {
       FirebaseFirestore.instance
-          .collection(
-              'users') // Assume 'users' is your main collection storing user details
+          .collection('users')
           .doc(user.uid)
           .get()
           .then((DocumentSnapshot userSnapshot) {
         if (userSnapshot.exists) {
-          String role =
-              userSnapshot.get('rool'); // Assuming you store role as 'rool'
+          String role = userSnapshot.get('rool');
           routeBasedOnUserRole(role);
         } else {
           print('User not found, please register first');
@@ -260,11 +277,20 @@ class _LoginPageState extends State<LoginPage> {
         route();
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
-          print('No user found for that email.');
+          showSnackBar(context, 'No user found for that email.');
         } else if (e.code == 'wrong-password') {
-          print('Wrong password provided for that user.');
+          showSnackBar(context, 'Wrong password provided for that user.');
         }
       }
     }
+  }
+
+  void showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: Duration(seconds: 2),
+      ),
+    );
   }
 }
