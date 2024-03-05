@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Auth/login.dart';
 import 'package:flutter_application_1/Sections/studentreq.dart';
+import 'package:flutter_application_1/Sections/teachertopic.dart';
 import 'package:flutter_application_1/Sections/topics.dart';
 
 class Teacher extends StatefulWidget {
@@ -15,7 +16,7 @@ class _StudentState extends State<Teacher> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 172, 197, 208),
+      backgroundColor: const Color.fromARGB(255, 207, 226, 233),
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 167, 20, 20),
         title: Center(
@@ -36,31 +37,37 @@ class _StudentState extends State<Teacher> {
           )
         ],
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: GridView.count(
-              crossAxisCount: 3,
-              mainAxisSpacing: 16,
-              crossAxisSpacing: 16,
-              padding: EdgeInsets.all(16),
-              children: [
-                _buildCard(context, 'Topic', Icons.topic_outlined,
-                    onPressed: () {}),
-                _buildCard(context, 'Discussion', Icons.mark_as_unread,
-                    onPressed: () {}),
-                _buildCard(context, 'Grading', Icons.date_range_sharp,
-                    onPressed: () {}),
-                _buildCard(context, 'Attendance', Icons.note, onPressed: () {}),
-                _buildCard(context, 'Timetable', Icons.punch_clock,
-                    onPressed: () {}),
-                _buildCard(context, 'Students Requests', Icons.person,
-                    onPressed: () {}),
-              ],
+      body: Padding(
+        padding: EdgeInsets.only(top: 25.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: GridView.count(
+                crossAxisCount: 3,
+                mainAxisSpacing: 16,
+                crossAxisSpacing: 16,
+                padding: EdgeInsets.all(16),
+                children: [
+                  _buildCard(context, 'Topic', Icons.topic_outlined,
+                      onPressed: () {}),
+                  _buildCard(context, 'Tasks', Icons.topic_outlined,
+                      onPressed: () {}),
+                  _buildCard(context, 'Discussion', Icons.mark_as_unread,
+                      onPressed: () {}),
+                  _buildCard(context, 'Grading', Icons.date_range_sharp,
+                      onPressed: () {}),
+                  _buildCard(context, 'Attendance', Icons.note,
+                      onPressed: () {}),
+                  _buildCard(context, 'Timetable', Icons.punch_clock,
+                      onPressed: () {}),
+                  _buildCard(context, 'Students Requests', Icons.person,
+                      onPressed: () {}),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -80,34 +87,35 @@ class _StudentState extends State<Teacher> {
         textSize = 14.0;
         textWeight = FontWeight.bold;
         break;
-      case 'Registration':
+      case 'Grading':
         cardColor = Color.fromARGB(255, 63, 155, 231);
         iconColor = Colors.white;
         textColor = Colors.white;
         textSize = 14.0;
         textWeight = FontWeight.bold;
         break;
-      case 'Examination':
+      case 'Discussion':
         cardColor = const Color.fromARGB(255, 111, 111, 111);
         iconColor = Colors.white;
         textColor = Colors.white;
         textSize = 14.0;
         textWeight = FontWeight.bold;
         break;
-      case 'Survey':
+      case 'Attendance':
+        cardColor = Color.fromARGB(255, 144, 14, 236);
+        iconColor = Colors.white;
+        textColor = Colors.white;
+        textSize = 14.0;
+        textWeight = FontWeight.bold;
+        break;
+      case 'Tasks':
         cardColor = Color.fromARGB(255, 237, 99, 175);
         iconColor = Colors.white;
         textColor = Colors.white;
         textSize = 14.0;
         textWeight = FontWeight.bold;
         break;
-      case 'Course Material':
-        cardColor = Color.fromARGB(255, 138, 98, 83);
-        iconColor = Colors.white;
-        textColor = Colors.white;
-        textSize = 14.0;
-        textWeight = FontWeight.bold;
-        break;
+
       case 'Timetable':
         cardColor = Color.fromARGB(255, 220, 164, 61);
         iconColor = Colors.white;

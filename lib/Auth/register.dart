@@ -19,7 +19,8 @@ class _RegisterState extends State<Register> {
   bool visible = false;
 
   final _formkey = GlobalKey<FormState>();
-  final _auth = FirebaseAuth.instance;
+  final _auth =
+      FirebaseAuth.instance; //  _authinstanceka bo eshkrdn lagal firebaseauth
 
   final TextEditingController passwordController = new TextEditingController();
   final TextEditingController confirmpassController =
@@ -31,7 +32,7 @@ class _RegisterState extends State<Register> {
   // final TextEditingController mobile = new TextEditingController();
   bool _isObscure = true;
   bool _isObscure2 = true;
-  File? file;
+  // File? file;
   var options = [
     'Student',
     'Teacher',
@@ -186,7 +187,8 @@ class _RegisterState extends State<Register> {
                               ),
                             ),
                             validator: (value) {
-                              RegExp regex = new RegExp(r'^.{6,}$');
+                              RegExp regex = new RegExp(
+                                  r'^.{6,}$'); //check aka bzane 6 pita passwordaka
                               if (value!.isEmpty) {
                                 return "Password cannot be empty";
                               }
