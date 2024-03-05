@@ -18,7 +18,7 @@ class _StudentState extends State<Teacher> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 207, 226, 233),
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 167, 20, 20),
+        backgroundColor: Color.fromARGB(255, 59, 20, 167),
         title: Center(
             child: Text(
           "Teacher Home Page",
