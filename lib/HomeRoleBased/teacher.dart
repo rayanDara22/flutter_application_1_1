@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Auth/login.dart';
+import 'package:flutter_application_1/Sections/grading.dart';
 import 'package:flutter_application_1/Sections/studentreq.dart';
 import 'package:flutter_application_1/Sections/teachertopic.dart';
+import 'package:flutter_application_1/Sections/timetable.dart';
 import 'package:flutter_application_1/Sections/topics.dart';
 
 class Teacher extends StatefulWidget {
@@ -144,6 +146,24 @@ class _StudentState extends State<Teacher> {
             MaterialPageRoute(
               builder: (context) =>
                   TopicP(), // Navigate to DetailsScreen for Topic
+            ),
+          );
+        } else if (title == 'Grading') {
+          // Check for 'Request Student' title
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  GradingScreen(), // Navigate to RequestScreen for Request Student
+            ),
+          );
+        } else if (title == 'Timetable') {
+          // Check for 'Request Student' title
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  TimetableScreen(), // Navigate to RequestScreen for Request Student
             ),
           );
         } else if (title == 'Students Requests') {
