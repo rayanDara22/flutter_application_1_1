@@ -55,8 +55,8 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(
-          255, 253, 253, 254), // Change the background color as needed
+      backgroundColor: const Color.fromARGB(
+          255, 207, 226, 233), // Change the background color as needed
       body: Center(
         child: SlideTransition(
           position: _animation,

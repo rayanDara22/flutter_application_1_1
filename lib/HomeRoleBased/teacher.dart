@@ -105,14 +105,18 @@ class _TeacherState extends State<Teacher> {
                           builder: (context) => TimetableScreen()),
                     );
                   }),
-                  _buildCard(context, 'Students Requests',
-                      'https://m.media-amazon.com/images/G/31/Amazon-Global-Selling-IN/Propel/learn_from_the_best_AGS.png',
-                      onPressed: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => RequestPage()),
-                    // );
-                  }),
+                  SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: _buildCard(context, 'Students Requests',
+                        'https://m.media-amazon.com/images/G/31/Amazon-Global-Selling-IN/Propel/learn_from_the_best_AGS.png',
+                        onPressed: () {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => RequestPage()),
+                      // );
+                    }),
+                  ),
                 ],
               ),
             ),
