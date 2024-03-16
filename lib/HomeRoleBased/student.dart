@@ -16,7 +16,7 @@ class _StudentState extends State<Student> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 207, 226, 233),
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 167, 20, 20),
+        backgroundColor: Color.fromARGB(255, 59, 20, 167),
         title: Center(
             child: Text(
           "Student Home Page",
@@ -31,6 +31,7 @@ class _StudentState extends State<Student> {
             },
             icon: Icon(
               Icons.logout_rounded,
+              color: Colors.white,
             ),
           )
         ],
@@ -48,17 +49,59 @@ class _StudentState extends State<Student> {
                   crossAxisSpacing: 16,
                   padding: EdgeInsets.all(16),
                   children: [
-                    _buildCard(context, 'Topic', Icons.topic_outlined,
-                        onPressed: () {}),
-                    _buildCard(context, 'Discussion', Icons.mark_as_unread,
-                        onPressed: () {}),
-                    _buildCard(context, 'Attendance', Icons.date_range_sharp,
-                        onPressed: () {}),
-                    _buildCard(context, 'Grading', Icons.date_range_sharp,
-                        onPressed: () {}),
-                    _buildCard(context, 'Timetable', Icons.punch_clock,
-                        onPressed: () {}),
-                    _buildCard(context, 'Tasks', Icons.note, onPressed: () {}),
+                    _buildCard(context, 'Topic',
+                        'https://cdn-icons-png.flaticon.com/512/11135/11135742.png',
+                        onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => TopicP()),
+                      );
+                    }),
+                    _buildCard(context, 'Discussion',
+                        'https://cdn-icons-png.flaticon.com/512/9740/9740568.png',
+                        onPressed: () {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) => TimetableScreen()),
+                      // );
+                    }),
+                    _buildCard(context, 'Attendance',
+                        'https://cdn-icons-png.flaticon.com/512/9934/9934439.png',
+                        onPressed: () {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) => AttendanceScreen()),
+                      // );
+                    }),
+                    _buildCard(context, 'Grading',
+                        'https://cdn3.iconfinder.com/data/icons/100-education-5/512/62_Best_Grade-512.png',
+                        onPressed: () {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) => TimetableScreen()),
+                      // );
+                    }),
+                    _buildCard(context, 'Timetable',
+                        'https://cdn0.iconfinder.com/data/icons/mentoring-and-training-16/66/38_schedule_planning_scheme_calendar_appointment-512.png',
+                        onPressed: () {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) => AttendanceScreen()),
+                      // );
+                    }),
+                    _buildCard(context, 'Tasks',
+                        'https://cdn-icons-png.flaticon.com/512/11364/11364993.png',
+                        onPressed: () {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) => TimetableScreen()),
+                      // );
+                    }),
                   ],
                 ),
               ),
@@ -69,87 +112,67 @@ class _StudentState extends State<Student> {
     );
   }
 
-  Widget _buildCard(BuildContext context, String title, IconData icon,
+  Widget _buildCard(BuildContext context, String title, String imageUrl,
       {VoidCallback? onPressed}) {
     Color cardColor;
-    Color iconColor;
     Color textColor;
     double textSize = 16.0;
     FontWeight textWeight = FontWeight.bold;
     switch (title) {
       case 'Topic':
-        cardColor = Color.fromARGB(255, 241, 202, 25);
-        iconColor = Colors.white;
+        cardColor = Color.fromARGB(255, 4, 162, 206);
         textColor = Colors.white;
-        textSize = 14.0;
+        textSize = 20.0;
         textWeight = FontWeight.bold;
         break;
       case 'Discussion':
-        cardColor = Color.fromARGB(255, 63, 155, 231);
-        iconColor = Colors.white;
+        cardColor = Color.fromARGB(255, 238, 84, 67);
         textColor = Colors.white;
-        textSize = 14.0;
+        textSize = 20.0;
         textWeight = FontWeight.bold;
         break;
       case 'Attendance':
-        cardColor = const Color.fromARGB(255, 111, 111, 111);
-        iconColor = Colors.white;
+        cardColor = Color.fromARGB(255, 168, 167, 167);
         textColor = Colors.white;
-        textSize = 14.0;
+        textSize = 20.0;
         textWeight = FontWeight.bold;
         break;
       case 'Grading':
         cardColor = Color.fromARGB(255, 237, 99, 175);
-        iconColor = Colors.white;
         textColor = Colors.white;
-        textSize = 14.0;
+        textSize = 20.0;
         textWeight = FontWeight.bold;
         break;
       case 'Timetable':
-        cardColor = Color.fromARGB(255, 138, 98, 83);
-        iconColor = Colors.white;
+        cardColor = Color.fromARGB(255, 202, 216, 10);
         textColor = Colors.white;
-        textSize = 14.0;
+        textSize = 20.0;
         textWeight = FontWeight.bold;
         break;
       case 'Tasks':
-        cardColor = Color.fromARGB(255, 220, 164, 61);
-        iconColor = Colors.white;
+        cardColor = Color.fromARGB(255, 249, 170, 125);
         textColor = Colors.white;
-        textSize = 14.0;
+        textSize = 20.0;
         textWeight = FontWeight.bold;
         break;
 
       default:
         cardColor = Colors.grey;
-        iconColor = Colors.grey;
         textColor = Colors.black;
         break;
     }
     return InkWell(
-      onTap: () {
-        if (title == 'Topic') {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  TopicP(), // Navigate to DetailsScreen for Topic
-            ),
-          );
-        } else {
-          onPressed?.call();
-        }
-      },
+      onTap: onPressed,
       child: Card(
         elevation: 4,
         color: cardColor,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              icon,
-              size: 48,
-              color: iconColor,
+            Image.network(
+              imageUrl,
+              height: 48,
+              width: 48,
             ),
             SizedBox(height: 16),
             Text(
