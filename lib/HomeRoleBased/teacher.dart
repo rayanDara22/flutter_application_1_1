@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Auth/login.dart';
+import 'package:flutter_application_1/Sections/aatendance.dart';
 import 'package:flutter_application_1/Sections/grading.dart';
 import 'package:flutter_application_1/Sections/studentreq.dart';
 import 'package:flutter_application_1/Sections/teachertopic.dart';
@@ -172,6 +173,14 @@ class _StudentState extends State<Teacher> {
             MaterialPageRoute(
               builder: (context) =>
                   RequestPage(), // Navigate to DetailsScreen for Topic
+            ),
+          );
+        } else if (title == 'Attendance') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  AttendanceScreen(), // Navigate to DetailsScreen for Topic
             ),
           );
         }
