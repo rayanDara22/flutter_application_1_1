@@ -217,8 +217,7 @@ class _TeacherState extends State<Teacher> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-                  AttendanceScreen(), // Navigate to DetailsScreen for Topic
+              builder: (context) => AttendanceScreen(),
             ),
           );
         }
