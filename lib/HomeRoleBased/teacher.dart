@@ -145,8 +145,7 @@ class _StudentState extends State<Teacher> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-                  TopicP(), // Navigate to DetailsScreen for Topic
+              builder: (context) => TopicP(),
             ),
           );
         } else if (title == 'Grading') {
