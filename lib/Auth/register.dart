@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'login.dart';
 // import 'model.dart';
 
-// import 'model.dart';
-
 class Register extends StatefulWidget {
   @override
   _RegisterState createState() => _RegisterState();
