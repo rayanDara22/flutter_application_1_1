@@ -59,9 +59,9 @@ class _TimetableScreenState extends State<TimetableScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 168, 189, 206),
+      backgroundColor: Color.fromARGB(255, 207, 226, 233),
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 71, 22, 148),
+        backgroundColor: Color.fromARGB(255, 167, 20, 20),
         title: Center(
           child: Text(
             'Timetable',
@@ -80,7 +80,7 @@ class _TimetableScreenState extends State<TimetableScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Color.fromARGB(255, 58, 24, 172),
+        backgroundColor: Color.fromARGB(255, 167, 20, 20),
         onPressed: () {
           // Navigate to add timetable screen
           Navigator.push(

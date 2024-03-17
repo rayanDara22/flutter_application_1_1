@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Auth/login.dart';
+import 'package:flutter_application_1/HomeRoleBased/student.dart';
 import 'package:flutter_application_1/Sections/aatendance.dart';
 import 'package:flutter_application_1/Sections/grading.dart';
 import 'package:flutter_application_1/Sections/studentreq.dart';
@@ -9,13 +10,13 @@ import 'package:flutter_application_1/Sections/timetable.dart';
 import 'package:flutter_application_1/Sections/topics.dart';
 
 class Teacher extends StatefulWidget {
-  const Teacher({super.key});
+  const Teacher({Key? key});
 
   @override
-  State<Teacher> createState() => _StudentState();
+  State<Teacher> createState() => _TeacherState();
 }
 
-class _StudentState extends State<Teacher> {
+class _TeacherState extends State<Teacher> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,12 +24,13 @@ class _StudentState extends State<Teacher> {
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 59, 20, 167),
         title: Center(
-            child: Text(
-          "Teacher Home Page",
-          style: TextStyle(
-            color: Colors.white,
+          child: Text(
+            "Teacher Home Page",
+            style: TextStyle(
+              color: Colors.white,
+            ),
           ),
-        )),
+        ),
         actions: [
           IconButton(
             onPressed: () {
@@ -52,20 +54,69 @@ class _StudentState extends State<Teacher> {
                 crossAxisSpacing: 16,
                 padding: EdgeInsets.all(16),
                 children: [
-                  _buildCard(context, 'Topic', Icons.topic_outlined,
-                      onPressed: () {}),
-                  _buildCard(context, 'Tasks', Icons.topic_outlined,
-                      onPressed: () {}),
-                  _buildCard(context, 'Discussion', Icons.mark_as_unread,
-                      onPressed: () {}),
-                  _buildCard(context, 'Grading', Icons.date_range_sharp,
-                      onPressed: () {}),
-                  _buildCard(context, 'Attendance', Icons.note,
-                      onPressed: () {}),
-                  _buildCard(context, 'Timetable', Icons.punch_clock,
-                      onPressed: () {}),
-                  _buildCard(context, 'Students Requests', Icons.person,
-                      onPressed: () {}),
+                  _buildCard(context, 'Topic',
+                      'https://cdn-icons-png.flaticon.com/512/11450/11450009.png',
+                      onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => TopicP()),
+                    );
+                  }),
+                  _buildCard(context, 'Tasks',
+                      'https://cdn-icons-png.flaticon.com/512/10618/10618741.png',
+                      onPressed: () {
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => TaskScreen()),
+                    // );
+                  }),
+                  _buildCard(context, 'Discussion',
+                      'https://cdn-icons-png.flaticon.com/512/1459/1459330.png',
+                      onPressed: () {
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //       builder: (context) => DiscussionScreen()),
+                    // );
+                  }),
+                  _buildCard(context, 'Grading',
+                      'https://cdn-icons-png.flaticon.com/512/7587/7587280.png',
+                      onPressed: () {
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => GradingScreen()),
+                    // );
+                  }),
+                  _buildCard(context, 'Attendance',
+                      'https://cdn-icons-png.flaticon.com/512/6612/6612108.png',
+                      onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AttendanceScreen()),
+                    );
+                  }),
+                  _buildCard(context, 'Timetable',
+                      'https://cdn3.iconfinder.com/data/icons/online-education-crayons-vol-1/256/class-timetable-1024.png',
+                      onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TimetableScreen()),
+                    );
+                  }),
+                  SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: _buildCard(context, 'Students Requests',
+                        'https://m.media-amazon.com/images/G/31/Amazon-Global-Selling-IN/Propel/learn_from_the_best_AGS.png',
+                        onPressed: () {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => RequestPage()),
+                      // );
+                    }),
+                  ),
                 ],
               ),
             ),
@@ -75,67 +126,58 @@ class _StudentState extends State<Teacher> {
     );
   }
 
-  Widget _buildCard(BuildContext context, String title, IconData icon,
+  Widget _buildCard(BuildContext context, String title, String imageUrl,
       {VoidCallback? onPressed}) {
     Color cardColor;
-    Color iconColor;
     Color textColor;
     double textSize = 16.0;
     FontWeight textWeight = FontWeight.bold;
     switch (title) {
       case 'Topic':
         cardColor = Color.fromARGB(255, 241, 202, 25);
-        iconColor = Colors.white;
         textColor = Colors.white;
-        textSize = 14.0;
+        textSize = 20.0;
         textWeight = FontWeight.bold;
         break;
       case 'Grading':
         cardColor = Color.fromARGB(255, 63, 155, 231);
-        iconColor = Colors.white;
         textColor = Colors.white;
-        textSize = 14.0;
+        textSize = 20.0;
         textWeight = FontWeight.bold;
         break;
       case 'Discussion':
         cardColor = const Color.fromARGB(255, 111, 111, 111);
-        iconColor = Colors.white;
         textColor = Colors.white;
-        textSize = 14.0;
+        textSize = 20.0;
         textWeight = FontWeight.bold;
         break;
       case 'Attendance':
-        cardColor = Color.fromARGB(255, 144, 14, 236);
-        iconColor = Colors.white;
+        cardColor = Color.fromARGB(255, 198, 144, 237);
         textColor = Colors.white;
-        textSize = 14.0;
+        textSize = 20.0;
         textWeight = FontWeight.bold;
         break;
       case 'Tasks':
         cardColor = Color.fromARGB(255, 237, 99, 175);
-        iconColor = Colors.white;
         textColor = Colors.white;
-        textSize = 14.0;
+        textSize = 20.0;
         textWeight = FontWeight.bold;
         break;
 
       case 'Timetable':
         cardColor = Color.fromARGB(255, 220, 164, 61);
-        iconColor = Colors.white;
         textColor = Colors.white;
-        textSize = 14.0;
+        textSize = 20.0;
         textWeight = FontWeight.bold;
         break;
       case 'Students Requests':
-        cardColor = Color.fromARGB(255, 143, 241, 73);
-        iconColor = Colors.white;
+        cardColor = Color.fromARGB(255, 87, 172, 27);
         textColor = Colors.white;
-        textSize = 14.0;
+        textSize = 20.0;
         textWeight = FontWeight.bold;
         break;
       default:
         cardColor = Colors.grey;
-        iconColor = Colors.grey;
         textColor = Colors.black;
         break;
     }
@@ -184,16 +226,17 @@ class _StudentState extends State<Teacher> {
           );
         }
       },
+      // onTap: onPressed,
       child: Card(
         elevation: 4,
         color: cardColor,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              icon,
-              size: 48,
-              color: iconColor,
+            Image.network(
+              imageUrl,
+              height: 48,
+              width: 48,
             ),
             SizedBox(height: 16),
             Text(
@@ -210,20 +253,6 @@ class _StudentState extends State<Teacher> {
       ),
     );
   }
-
-  // appBar: AppBar(
-  //   title: Text("Student"),
-  //   actions: [
-  //     IconButton(
-  //       onPressed: () {
-  //         logout(context);
-  //       },
-  //       icon: Icon(
-  //         Icons.logout,
-  //       ),
-  //     )
-  //   ],
-  // ),
 }
 
 Future<void> logout(BuildContext context) async {
