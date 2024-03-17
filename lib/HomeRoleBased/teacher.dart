@@ -38,6 +38,7 @@ class _TeacherState extends State<Teacher> {
             },
             icon: Icon(
               Icons.logout_rounded,
+              color: Colors.white,
             ),
           )
         ],
@@ -82,10 +83,10 @@ class _TeacherState extends State<Teacher> {
                   _buildCard(context, 'Grading',
                       'https://cdn-icons-png.flaticon.com/512/7587/7587280.png',
                       onPressed: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => GradingScreen()),
-                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => GradingScreen()),
+                    );
                   }),
                   _buildCard(context, 'Attendance',
                       'https://cdn-icons-png.flaticon.com/512/6612/6612108.png',
@@ -97,7 +98,7 @@ class _TeacherState extends State<Teacher> {
                     );
                   }),
                   _buildCard(context, 'Timetable',
-                      'https://cdn3.iconfinder.com/data/icons/online-education-crayons-vol-1/256/class-timetable-1024.png',
+                      'https://cdn.iconscout.com/icon/premium/png-256-thumb/timetable-15-767593.png',
                       onPressed: () {
                     Navigator.push(
                       context,
@@ -105,18 +106,14 @@ class _TeacherState extends State<Teacher> {
                           builder: (context) => TimetableScreen()),
                     );
                   }),
-                  SizedBox(
-                    height: 20,
-                    width: 20,
-                    child: _buildCard(context, 'Students Requests',
-                        'https://m.media-amazon.com/images/G/31/Amazon-Global-Selling-IN/Propel/learn_from_the_best_AGS.png',
-                        onPressed: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => RequestPage()),
-                      // );
-                    }),
-                  ),
+                  _buildCard(context, 'Students Requests',
+                      'https://png.pngtree.com/png-vector/20220519/ourmid/pngtree-approved-request-icon-color-flat-png-image_4696193.png',
+                      onPressed: () {
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => RequestPage()),
+                    // );
+                  }),
                 ],
               ),
             ),
@@ -158,22 +155,22 @@ class _TeacherState extends State<Teacher> {
         textWeight = FontWeight.bold;
         break;
       case 'Tasks':
-        cardColor = Color.fromARGB(255, 237, 99, 175);
+        cardColor = Color.fromARGB(255, 129, 248, 45);
         textColor = Colors.white;
         textSize = 20.0;
         textWeight = FontWeight.bold;
         break;
 
       case 'Timetable':
-        cardColor = Color.fromARGB(255, 220, 164, 61);
+        cardColor = Color.fromARGB(255, 250, 43, 43);
         textColor = Colors.white;
         textSize = 20.0;
         textWeight = FontWeight.bold;
         break;
       case 'Students Requests':
-        cardColor = Color.fromARGB(255, 87, 172, 27);
+        cardColor = Color.fromARGB(255, 49, 172, 86);
         textColor = Colors.white;
-        textSize = 20.0;
+        textSize = 17.0;
         textWeight = FontWeight.bold;
         break;
       default:

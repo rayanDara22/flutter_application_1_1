@@ -53,7 +53,11 @@ class _TopicPState extends State<TopicP> {
         actions: [
           if (isTeacher)
             IconButton(
-              icon: Icon(Icons.add),
+              icon: Icon(
+                Icons.add,
+                size: 35,
+                color: Colors.white,
+              ),
               onPressed: () {
                 showDialog(
                   context: context,
