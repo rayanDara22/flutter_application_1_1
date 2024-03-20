@@ -112,7 +112,7 @@ class RequestCard extends StatelessWidget {
         title: Text(
           'Student Email: ${requestDetails.studentEmail}',
           style: TextStyle(
-            color: Colors.white,
+            color: Colors.black,
           ),
         ),
         subtitle: Text(
