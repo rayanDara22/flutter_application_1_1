@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 
 class RequestPage extends StatelessWidget {
   @override
@@ -69,23 +69,27 @@ class RequestPage extends StatelessWidget {
 
 class RequestDetails {
   final String documentId;
-  final String studentEmail;
+  final List<String> studentEmails;
   final String topicName;
   final String teacherId;
   final String status;
 
   RequestDetails({
     required this.documentId,
-    required this.studentEmail,
+    required this.studentEmails,
     required this.teacherId,
     required this.topicName,
     required this.status,
   });
 
   factory RequestDetails.fromDocument(QueryDocumentSnapshot doc) {
+    List<String> emails = [];
+    if (doc['studentEmails'] is List) {
+      emails = List<String>.from(doc['studentEmails'] ?? []);
+    }
     return RequestDetails(
       documentId: doc.id,
-      studentEmail: (doc['studentEmail'] ?? '').toString(),
+      studentEmails: emails,
       teacherId: (doc['teacherId'] ?? '').toString(),
       topicName: (doc['topicName'] ?? '').toString(),
       status: (doc['status'] ?? '').toString(),
@@ -104,13 +108,15 @@ class RequestCard extends StatelessWidget {
       margin: EdgeInsets.all(8.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
-        side:
-            BorderSide(color: const Color.fromARGB(255, 8, 58, 99), width: 2.0),
+        side: BorderSide(
+          color: const Color.fromARGB(255, 8, 58, 99),
+          width: 2.0,
+        ),
       ),
       color: const Color.fromARGB(255, 172, 197, 208),
       child: ListTile(
         title: Text(
-          'Student Email: ${requestDetails.studentEmail}',
+          'Student Emails: ${requestDetails.studentEmails.join(', ')}',
           style: TextStyle(
             color: Colors.black,
           ),
@@ -126,15 +132,13 @@ class RequestCard extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: () {
-                // Accept logic here
-                acceptRequest(requestDetails.documentId);
+                acceptRequest(requestDetails.documentId, requestDetails);
               },
               child: Text('Accept'),
             ),
             SizedBox(width: 8.0),
             ElevatedButton(
               onPressed: () {
-                // Deny logic here
                 denyRequest(requestDetails.documentId);
               },
               child: Text('Deny'),
@@ -145,27 +149,46 @@ class RequestCard extends StatelessWidget {
     );
   }
 
-  // Function to handle accepting a request
-  void acceptRequest(String documentId) {
-    // Update status to "Accepted" in Firestore
-    FirebaseFirestore.instance
+  void acceptRequest(String documentId, RequestDetails requestDetails) async {
+    await FirebaseFirestore.instance
         .collection('requests')
         .doc(documentId)
         .update({'status': 'Accepted'});
 
-    // Display a success message or perform any other actions
-    print('Request accepted successfully!');
+    DocumentReference groupRef =
+        await FirebaseFirestore.instance.collection('groups').add({
+      'teacherId': requestDetails.teacherId,
+      'studentEmails': requestDetails.studentEmails,
+    });
+
+    String groupId = groupRef.id;
+
+    requestDetails.studentEmails.forEach((email) async {
+      QuerySnapshot userSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .where('email', isEqualTo: email)
+          .get();
+
+      if (userSnapshot.docs.isNotEmpty) {
+        String userId = userSnapshot.docs.first.id;
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userId)
+            .update({
+          'groupId': groupId,
+        });
+      }
+    });
+
+    print('Request accepted successfully! Group created with ID: $groupId');
   }
 
-  // Function to handle denying a request
-  void denyRequest(String documentId) {
-    // Update status to "Denied" in Firestore
-    FirebaseFirestore.instance
+  void denyRequest(String documentId) async {
+    await FirebaseFirestore.instance
         .collection('requests')
         .doc(documentId)
         .update({'status': 'Denied'});
 
-    // Display a success message or perform any other actions
     print('Request denied successfully!');
   }
 }

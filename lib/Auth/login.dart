@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_application_1/HomeRoleBased/headofdep.dart';
 import 'package:flutter_application_1/HomeRoleBased/student.dart';
 import 'package:flutter_application_1/HomeRoleBased/teacher.dart';
 
@@ -254,6 +255,19 @@ class _LoginPageState extends State<LoginPage> {
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
+      checkAndNavigate(user);
+    }
+  }
+
+  /// loginy head of departmentakaia ba pei uid acheta nawawa   , accountakam la backednawa drustkrdwa
+
+  void checkAndNavigate(User user) {
+    if (user.uid == '0Rww1GvPM6dE4MRfSz45jrejOsq2') {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HeadOfDepartment()),
+      );
+    } else {
       FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)

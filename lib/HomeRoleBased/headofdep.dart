@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/Sections/HDPTopicP.dart';
+import 'package:flutter_application_1/Sections/hdpSeeTopic.dart';
 import 'package:flutter_application_1/Sections/teachertopic.dart';
 import 'package:flutter_application_1/Sections/topics.dart';
 
@@ -82,8 +84,9 @@ class _StudentState extends State<HeadOfDepartment> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-                  TopicP(), // Navigate to DetailsScreen for Topic
+              builder: (context) => HDPTopicP(
+                  // teacherId: '',
+                  ), // Navigate to DetailsScreen for Topic
             ),
           );
         } else if (title == 'Teachers Requests') {

@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Auth/login.dart';
 import 'package:flutter_application_1/HomeRoleBased/student.dart';
+import 'package:flutter_application_1/Sections/CurentTeachetTopic.dart';
 import 'package:flutter_application_1/Sections/aatendance.dart';
+import 'package:flutter_application_1/Sections/discussion.dart';
 import 'package:flutter_application_1/Sections/grading.dart';
 import 'package:flutter_application_1/Sections/studentreq.dart';
 import 'package:flutter_application_1/Sections/teachertopic.dart';
@@ -184,7 +186,7 @@ class _TeacherState extends State<Teacher> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => TopicP(),
+              builder: (context) => CurrentTeacherTopics(),
             ),
           );
         } else if (title == 'Grading') {
@@ -194,6 +196,15 @@ class _TeacherState extends State<Teacher> {
             MaterialPageRoute(
               builder: (context) =>
                   GradingScreen(), // Navigate to RequestScreen for Request Student
+            ),
+          );
+        } else if (title == 'Discussion') {
+          // Check for 'Request Student' title
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  GroupListPage(), // Navigate to RequestScreen for Request Student
             ),
           );
         } else if (title == 'Timetable') {

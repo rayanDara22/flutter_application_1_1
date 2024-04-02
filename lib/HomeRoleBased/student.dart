@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Auth/login.dart';
+import 'package:flutter_application_1/Sections/chat.dart';
+import 'package:flutter_application_1/Sections/discussion.dart';
+import 'package:flutter_application_1/Sections/studentgroupchat.dart';
 import 'package:flutter_application_1/Sections/topics.dart';
 
 class Student extends StatefulWidget {
-  const Student({super.key});
+  const Student({Key? key}) : super(key: key);
 
   @override
   State<Student> createState() => _StudentState();
@@ -18,12 +21,13 @@ class _StudentState extends State<Student> {
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 59, 20, 167),
         title: Center(
-            child: Text(
-          "Student Home Page",
-          style: TextStyle(
-            color: Colors.white,
+          child: Text(
+            "Student Home Page",
+            style: TextStyle(
+              color: Colors.white,
+            ),
           ),
-        )),
+        ),
         actions: [
           IconButton(
             onPressed: () {
@@ -60,48 +64,24 @@ class _StudentState extends State<Student> {
                     _buildCard(context, 'Discussion',
                         'https://cdn-icons-png.flaticon.com/512/9740/9740568.png',
                         onPressed: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //       builder: (context) => TimetableScreen()),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => GroupChatPageStud()),
+                      );
                     }),
                     _buildCard(context, 'Attendance',
                         'https://cdn-icons-png.flaticon.com/512/9934/9934439.png',
-                        onPressed: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //       builder: (context) => AttendanceScreen()),
-                      // );
-                    }),
+                        onPressed: () {}),
                     _buildCard(context, 'Grading',
                         'https://cdn3.iconfinder.com/data/icons/100-education-5/512/62_Best_Grade-512.png',
-                        onPressed: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //       builder: (context) => TimetableScreen()),
-                      // );
-                    }),
+                        onPressed: () {}),
                     _buildCard(context, 'Timetable',
                         'https://cdn0.iconfinder.com/data/icons/mentoring-and-training-16/66/38_schedule_planning_scheme_calendar_appointment-512.png',
-                        onPressed: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //       builder: (context) => AttendanceScreen()),
-                      // );
-                    }),
+                        onPressed: () {}),
                     _buildCard(context, 'Tasks',
                         'https://cdn-icons-png.flaticon.com/512/11364/11364993.png',
-                        onPressed: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //       builder: (context) => TimetableScreen()),
-                      // );
-                    }),
+                        onPressed: () {}),
                   ],
                 ),
               ),
@@ -118,6 +98,7 @@ class _StudentState extends State<Student> {
     Color textColor;
     double textSize = 16.0;
     FontWeight textWeight = FontWeight.bold;
+
     switch (title) {
       case 'Topic':
         cardColor = Color.fromARGB(255, 4, 162, 206);
@@ -125,12 +106,7 @@ class _StudentState extends State<Student> {
         textSize = 20.0;
         textWeight = FontWeight.bold;
         break;
-      case 'Discussion':
-        cardColor = Color.fromARGB(255, 238, 84, 67);
-        textColor = Colors.white;
-        textSize = 20.0;
-        textWeight = FontWeight.bold;
-        break;
+
       case 'Attendance':
         cardColor = Color.fromARGB(255, 168, 167, 167);
         textColor = Colors.white;
@@ -149,18 +125,26 @@ class _StudentState extends State<Student> {
         textSize = 20.0;
         textWeight = FontWeight.bold;
         break;
+
+      case 'Discussion':
+        cardColor = Color.fromARGB(255, 238, 84, 67);
+        textColor = Colors.white;
+        textSize = 20.0;
+        textWeight = FontWeight.bold;
+
+        break;
       case 'Tasks':
         cardColor = Color.fromARGB(255, 249, 170, 125);
         textColor = Colors.white;
         textSize = 20.0;
         textWeight = FontWeight.bold;
         break;
-
       default:
         cardColor = Colors.grey;
         textColor = Colors.black;
         break;
     }
+
     return InkWell(
       onTap: onPressed,
       child: Card(
@@ -190,28 +174,14 @@ class _StudentState extends State<Student> {
     );
   }
 
-  // appBar: AppBar(
-  //   title: Text("Student"),
-  //   actions: [
-  //     IconButton(
-  //       onPressed: () {
-  //         logout(context);
-  //       },
-  //       icon: Icon(
-  //         Icons.logout,
-  //       ),
-  //     )
-  //   ],
-  // ),
-}
-
-Future<void> logout(BuildContext context) async {
-  CircularProgressIndicator();
-  await FirebaseAuth.instance.signOut();
-  Navigator.pushReplacement(
-    context,
-    MaterialPageRoute(
-      builder: (context) => LoginPage(),
-    ),
-  );
+  Future<void> logout(BuildContext context) async {
+    CircularProgressIndicator();
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LoginPage(),
+      ),
+    );
+  }
 }

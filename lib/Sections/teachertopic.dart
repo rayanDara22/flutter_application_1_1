@@ -85,12 +85,17 @@ class TopicCard extends StatefulWidget {
 
 class _TopicCardState extends State<TopicCard> {
   bool requestSubmitted = false;
+  final TextEditingController emailController1 = TextEditingController();
+  final TextEditingController emailController2 = TextEditingController();
+  final TextEditingController emailController3 = TextEditingController();
 
   // Function to handle the "Apply to this topic" button click
   void applyToTopic() async {
-    // Retrieve the current user's email
-    User? user = FirebaseAuth.instance.currentUser;
-    String userEmail = user?.email ?? '';
+    List<String> emails = [
+      emailController1.text.trim(),
+      emailController2.text.trim(),
+      emailController3.text.trim(),
+    ];
 
     // Check if the request has already been submitted by the student
     if (requestSubmitted) {
@@ -99,9 +104,41 @@ class _TopicCardState extends State<TopicCard> {
       return;
     }
 
+    // Check if at least 2 email addresses are provided
+    if (emails.any((email) => email.isNotEmpty) && emails.length < 2) {
+      showAlertDialog(context, 'Insufficient Emails',
+          'Please enter at least 2 valid email addresses to apply to this topic.');
+      return;
+    }
+
+    // Check if the emails exist in Firestore
+    final CollectionReference usersCollection =
+        FirebaseFirestore.instance.collection('users');
+    final List<String> existingEmails = [];
+    final List<String> nonExistingEmails = [];
+
+    for (String email in emails) {
+      if (email.isNotEmpty) {
+        QuerySnapshot querySnapshot =
+            await usersCollection.where('email', isEqualTo: email).get();
+
+        if (querySnapshot.docs.isNotEmpty) {
+          existingEmails.add(email);
+        } else {
+          nonExistingEmails.add(email);
+        }
+      }
+    }
+
+    if (existingEmails.length < 2) {
+      showAlertDialog(context, 'Emails Not Found',
+          'Some of the entered email addresses do not exist in our system. Please check and try again.');
+      return;
+    }
+
     // Prepare data to be added to the "requests" collection
     Map<String, dynamic> requestData = {
-      'studentEmail': userEmail,
+      'studentEmails': existingEmails,
       'teacherId': widget.teacherId,
       'topicName': widget.topicDetails.topicName,
       'status': 'Pending', // You can set an initial status
@@ -154,6 +191,19 @@ class _TopicCardState extends State<TopicCard> {
                     fontSize: 16.0,
                     color: const Color.fromARGB(255, 8, 58, 99),
                   ),
+                ),
+                SizedBox(height: 16.0),
+                TextField(
+                  controller: emailController1,
+                  decoration: InputDecoration(labelText: 'Email 1'),
+                ),
+                TextField(
+                  controller: emailController2,
+                  decoration: InputDecoration(labelText: 'Email 2'),
+                ),
+                TextField(
+                  controller: emailController3,
+                  decoration: InputDecoration(labelText: 'Email 3'),
                 ),
                 SizedBox(height: 16.0),
                 ElevatedButton(
