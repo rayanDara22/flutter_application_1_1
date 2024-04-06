@@ -6,7 +6,12 @@ class HODRequestPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('HOD Requests'),
+        backgroundColor: Colors.purple,
+        title: Center(
+            child: Text(
+          'HOD Requests',
+          style: TextStyle(color: Colors.white),
+        )),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream:

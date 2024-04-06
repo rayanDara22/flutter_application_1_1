@@ -10,11 +10,15 @@ class GroupListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'My Groups',
-          style: TextStyle(color: Colors.white),
+        backgroundColor: const Color.fromARGB(255, 140, 207, 142),
+        title: Center(
+          child: Text(
+            'My Groups',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
       ),
+      backgroundColor: Colors.white, // Set background color for the dashboard
       body: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, userSnapshot) {
@@ -111,7 +115,7 @@ class GroupCard extends StatelessWidget {
           width: 2.0,
         ),
       ),
-      color: const Color.fromARGB(255, 172, 197, 208),
+      color: Color.fromARGB(255, 249, 210, 142),
       child: ListTile(
         title: Text(
           'Group ID: ${groupDetails.groupId}',
@@ -134,7 +138,18 @@ class GroupCard extends StatelessWidget {
               ),
             );
           },
-          child: Text('Open Group Chat'),
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(
+              Color.fromARGB(255, 245, 242, 233), // Button background color
+            ),
+          ),
+          child: Text(
+            'Open Group Chat',
+            style: TextStyle(
+              color: const Color.fromARGB(
+                  255, 169, 102, 2), // Text color for the button
+            ),
+          ),
         ),
       ),
     );

@@ -59,9 +59,9 @@ class _TimetableScreenState extends State<TimetableScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 207, 226, 233),
+      backgroundColor: Color.fromARGB(255, 244, 247, 213),
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 167, 20, 20),
+        backgroundColor: Color.fromARGB(255, 244, 204, 60),
         title: Center(
           child: Text(
             'Timetable',
@@ -80,7 +80,7 @@ class _TimetableScreenState extends State<TimetableScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Color.fromARGB(255, 167, 20, 20),
+        backgroundColor: Color.fromARGB(255, 244, 204, 60),
         onPressed: () {
           // Navigate to add timetable screen
           Navigator.push(
@@ -231,7 +231,7 @@ class _AddTimetableScreenState extends State<AddTimetableScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 71, 22, 148),
+        backgroundColor: Color.fromARGB(255, 128, 60, 237),
         title: Center(
             child: Text(
           'Add Timetable',
@@ -260,13 +260,27 @@ class _AddTimetableScreenState extends State<AddTimetableScreen> {
               },
               decoration: InputDecoration(labelText: 'Timetable'),
             ),
-            SizedBox(height: 20.0),
-            ElevatedButton(
-              onPressed: () {
-                widget.addTimetable(day, timetable);
-                Navigator.pop(context);
-              },
-              child: Center(child: Text('Add new Timetable')),
+            SizedBox(
+              height: 30,
+            ),
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  widget.addTimetable(day, timetable);
+                  Navigator.pop(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 173, 33,
+                      243), // Set the background color for the button
+                ),
+                child: Text(
+                  'Add new Timetable',
+                  style: TextStyle(
+                    color: Colors.white, // Set text color
+                    fontWeight: FontWeight.bold, // Set text style
+                  ),
+                ),
+              ),
             ),
           ],
         ),
@@ -308,10 +322,12 @@ class _EditTimetableScreenState extends State<EditTimetableScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 71, 22, 148),
-        title: Text(
-          'Edit Timetable',
-          style: TextStyle(color: Colors.white),
+        backgroundColor: Color.fromARGB(255, 7, 156, 146),
+        title: Center(
+          child: Text(
+            'Edit Timetable',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
       ),
       body: Padding(
@@ -344,15 +360,32 @@ class _EditTimetableScreenState extends State<EditTimetableScreen> {
                 // Update timetable with edited details
                 Navigator.pop(context);
               },
-              child: Center(child: Text('Save')),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 20, 114,
+                    108), // Set the background color for the button
+              ),
+              child: Center(
+                child: Text(
+                  'Save',
+                  style: TextStyle(color: Colors.white), // Set text color
+                ),
+              ),
             ),
             SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () {
-                // Update timetable with edited details
                 Navigator.pop(context);
               },
-              child: Center(child: Text('Cancle')),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 20, 114,
+                    108), // Set the background color for the button
+              ),
+              child: Center(
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(color: Colors.white), // Set text color
+                ),
+              ),
             ),
           ],
         ),

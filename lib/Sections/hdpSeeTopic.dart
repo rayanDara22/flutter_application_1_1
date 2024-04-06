@@ -10,9 +10,12 @@ class hdpSeeTopic extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Teacher Topics',
-          style: TextStyle(color: Colors.white),
+        backgroundColor: Colors.red,
+        title: Center(
+          child: Text(
+            'Teacher Topics',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
       ),
       body: StreamBuilder<QuerySnapshot>(

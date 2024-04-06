@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Auth/login.dart';
 import 'package:flutter_application_1/HomeRoleBased/student.dart';
 import 'package:flutter_application_1/Sections/CurentTeachetTopic.dart';
+import 'package:flutter_application_1/Sections/Tasks.dart';
 import 'package:flutter_application_1/Sections/aatendance.dart';
 import 'package:flutter_application_1/Sections/discussion.dart';
 import 'package:flutter_application_1/Sections/grading.dart';
@@ -68,10 +69,10 @@ class _TeacherState extends State<Teacher> {
                   _buildCard(context, 'Tasks',
                       'https://cdn-icons-png.flaticon.com/512/10618/10618741.png',
                       onPressed: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => TaskScreen()),
-                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Taskk()),
+                    );
                   }),
                   _buildCard(context, 'Discussion',
                       'https://cdn-icons-png.flaticon.com/512/1459/1459330.png',
@@ -229,6 +230,13 @@ class _TeacherState extends State<Teacher> {
             context,
             MaterialPageRoute(
               builder: (context) => AttendanceScreen(),
+            ),
+          );
+        } else if (title == 'Tasks') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Taskk(),
             ),
           );
         }

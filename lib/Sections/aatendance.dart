@@ -17,7 +17,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 167, 20, 20),
+        backgroundColor: Color.fromARGB(255, 224, 108, 247),
         title: Center(
           child: Text(
             'Attendance',
@@ -88,7 +88,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Color.fromARGB(255, 167, 20, 20),
+        backgroundColor: Color.fromARGB(255, 224, 108, 247),
         onPressed: () {
           // Save attendance or perform any other action
           print('Attendance: $attendance');

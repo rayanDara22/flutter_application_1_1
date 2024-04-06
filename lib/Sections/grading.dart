@@ -18,7 +18,7 @@ class _GradingScreenState extends State<GradingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 170, 49, 41),
+        backgroundColor: Color.fromARGB(255, 69, 143, 218),
         title: Center(
           child: Text(
             'Grading Screen',
@@ -80,7 +80,7 @@ class _GradingScreenState extends State<GradingScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Color.fromARGB(255, 170, 49, 41),
+        backgroundColor: Color.fromARGB(255, 69, 143, 218),
         onPressed: () {
           _showConfirmationDialog(context);
         },
