@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -94,7 +96,7 @@ class _CurrentTeacherTopicsState extends State<CurrentTeacherTopics> {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      _addTopicToFirestore();
+                      _addTopicAsRequest();
                       Navigator.of(context).pop();
                     },
                     child: Text('Save'),
@@ -109,7 +111,7 @@ class _CurrentTeacherTopicsState extends State<CurrentTeacherTopics> {
     );
   }
 
-  void _addTopicToFirestore() async {
+  void _addTopicAsRequest() async {
     User? user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {
@@ -122,73 +124,73 @@ class _CurrentTeacherTopicsState extends State<CurrentTeacherTopics> {
           .where('teacherID', isEqualTo: user.uid)
           .get();
 
-      // Check for similarity with existing topics
+      // Initialize variables to track similarity details
       bool isSimilarTopic = false;
+      double similarityPercentage = 0;
+      String similarTopicId = '';
+
       topicsSnapshot.docs.forEach((doc) {
         String existingTopicName = doc['topicName'];
         String existingTopicDescription = doc['description'];
-        if (areTopicsSimilar(newTopicName, newTopicDescription,
-            existingTopicName, existingTopicDescription)) {
+        double currentSimilarity = calculateSimilarityPercentage(newTopicName,
+            newTopicDescription, existingTopicName, existingTopicDescription);
+
+        if (currentSimilarity > similarityPercentage) {
+          similarityPercentage = currentSimilarity;
           isSimilarTopic = true;
-          return;
+          similarTopicId = doc.id;
         }
       });
 
       if (isSimilarTopic) {
-        // Show an alert or error message for similarity found
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Similar Topic Found'),
-              content: Text(
-                  'A similar topic already exists. Please choose a different topic.'),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
-      } else {
-        // Add the topic to Firestore if not similar
-        FirebaseFirestore.instance.collection('topics').add({
+        // Store the request with information about the similar topic
+        await FirebaseFirestore.instance.collection('topicRequests').add({
           'topicName': newTopicName,
           'description': newTopicDescription,
-          'teacherID': user.uid,
+          'teacherId': user.uid,
+          'status': 'Pending', // Initial status is 'Pending'
+          'similarTopicId': similarTopicId, // Store similar topic ID
+          'similarityPercentage':
+              similarityPercentage, // Store similarity percentage
         });
-
-        // Clear the text controllers after adding
-        topicNameController.clear();
-        topicDescriptionController.clear();
+      } else {
+        // Add the topic as a request directly
+        await FirebaseFirestore.instance.collection('topicRequests').add({
+          'topicName': newTopicName,
+          'description': newTopicDescription,
+          'teacherId': user.uid,
+          'status': 'Pending', // Initial status is 'Pending'
+          'similarityPercentage':
+              similarityPercentage, // Store similarity percentage (0 if no similarity)
+        });
       }
+
+      // Clear the text controllers after adding
+      topicNameController.clear();
+      topicDescriptionController.clear();
     }
   }
 
-  /////check similarity logic
-  bool areTopicsSimilar(String newTopicName, String newTopicDescription,
-      String existingTopicName, String existingTopicDescription) {
+  double calculateSimilarityPercentage(
+      String newTopicName,
+      String newTopicDescription,
+      String existingTopicName,
+      String existingTopicDescription) {
     // Calculate Levenshtein Distance for topic names
     int nameDistance =
         calculateLevenshteinDistance(newTopicName, existingTopicName);
-    double nameSimilarity = 1 - (nameDistance / newTopicName.length);
+    double nameSimilarity =
+        1 - (nameDistance / max(newTopicName.length, existingTopicName.length));
 
     // Calculate Levenshtein Distance for topic descriptions
     int descriptionDistance = calculateLevenshteinDistance(
         newTopicDescription, existingTopicDescription);
-    double descriptionSimilarity =
-        1 - (descriptionDistance / newTopicDescription.length);
+    double descriptionSimilarity = 1 -
+        (descriptionDistance /
+            max(newTopicDescription.length, existingTopicDescription.length));
 
-    // Set a similarity threshold (adjust as needed)
-    double similarityThreshold = 0.5; // 50% similarity threshold
-
-    // Check if both name and description similarities meet the threshold
-    return nameSimilarity >= similarityThreshold &&
-        descriptionSimilarity >= similarityThreshold;
+    // Average the similarity percentages for name and description
+    return (nameSimilarity + descriptionSimilarity) / 2 * 100;
   }
 
   int calculateLevenshteinDistance(String text1, String text2) {

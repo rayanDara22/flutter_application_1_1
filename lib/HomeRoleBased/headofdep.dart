@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Sections/HDPTopicP.dart';
+import 'package:flutter_application_1/Sections/hdpRequests.dart';
 import 'package:flutter_application_1/Sections/hdpSeeTopic.dart';
 import 'package:flutter_application_1/Sections/teachertopic.dart';
 import 'package:flutter_application_1/Sections/topics.dart';
@@ -90,14 +91,13 @@ class _StudentState extends State<HeadOfDepartment> {
             ),
           );
         } else if (title == 'Teachers Requests') {
-          // Check for 'Request Student' title
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) =>
-          //         teacherRequest(), // Navigate to RequestScreen for Request Student
-          //   ),
-          // );
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  HODRequestPage(), // Navigate to RequestScreen for Request Student
+            ),
+          );
         } else {
           onPressed?.call();
         }
