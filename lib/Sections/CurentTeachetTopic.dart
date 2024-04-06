@@ -20,7 +20,8 @@ class _CurrentTeacherTopicsState extends State<CurrentTeacherTopics> {
   void initState() {
     super.initState();
 
-    // Initialize the stream to fetch topics related to the current teacher
+    // Initialize the stream to fetch topics related to the current teacher, har mamostayak topicakai xoi ahenetawa
+    //ka daxli krdwa bapei teacherID
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       teacherTopicsStream = FirebaseFirestore.instance
@@ -51,11 +52,11 @@ class _CurrentTeacherTopicsState extends State<CurrentTeacherTopics> {
             return Text('No topics available for you.');
           }
 
-          // Extract topic details from Firestore documents
+          // Extract topic details from Firestore documents , nawy topic w descriptionaka ahenetawa
           List<TopicDetails> topicDetails = snapshot.data!.docs
               .map((doc) => TopicDetails.fromDocument(doc))
               .toList();
-
+          // topicakan ba pei designi aw cardai xwarawa pshan ayatawa  ka drustman krdwa ba sheway list agar habw
           return ListView.builder(
             itemCount: topicDetails.length,
             itemBuilder: (context, index) {
@@ -111,6 +112,7 @@ class _CurrentTeacherTopicsState extends State<CurrentTeacherTopics> {
     );
   }
 
+// la buttoni saveakaia bangman krdotawa
   void _addTopicAsRequest() async {
     User? user = FirebaseAuth.instance.currentUser;
 
@@ -125,9 +127,10 @@ class _CurrentTeacherTopicsState extends State<CurrentTeacherTopics> {
           .get();
 
       // Initialize variables to track similarity details
+
       bool isSimilarTopic = false;
-      double similarityPercentage = 0;
-      String similarTopicId = '';
+      double similarityPercentage = 0; //  nmuna %100 ,rezhay similarityaka
+      String similarTopicId = ''; // idy topica hawshewaka warg agre
 
       topicsSnapshot.docs.forEach((doc) {
         String existingTopicName = doc['topicName'];
@@ -190,11 +193,13 @@ class _CurrentTeacherTopicsState extends State<CurrentTeacherTopics> {
             max(newTopicDescription.length, existingTopicDescription.length));
 
     // Average the similarity percentages for name and description
+
     return (nameSimilarity + descriptionSimilarity) / 2 * 100;
   }
 
   int calculateLevenshteinDistance(String text1, String text2) {
     // Initialize the Levenshtein Distance matrix
+
     List<List<int>> distanceMatrix = List.generate(
         text1.length + 1, (i) => List<int>.filled(text2.length + 1, 0));
 

@@ -63,6 +63,7 @@ class TopicDetails {
     required this.teacherId,
   });
 
+// har mamostayak topic w   etaili xoi ahenetawa ba pei idyakai
   factory TopicDetails.fromDocument(
       QueryDocumentSnapshot doc, String teacherId) {
     return TopicDetails(
@@ -112,6 +113,7 @@ class _TopicCardState extends State<TopicCard> {
     }
 
     // Check if the emails exist in Firestore
+
     final CollectionReference usersCollection =
         FirebaseFirestore.instance.collection('users');
     final List<String> existingEmails = [];
@@ -137,6 +139,7 @@ class _TopicCardState extends State<TopicCard> {
     }
 
     // Prepare data to be added to the "requests" collection
+
     Map<String, dynamic> requestData = {
       'studentEmails': existingEmails,
       'teacherId': widget.teacherId,

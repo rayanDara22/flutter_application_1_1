@@ -16,9 +16,9 @@ class _RegisterState extends State<Register> {
   bool showProgress = false;
   bool visible = false;
 
-  final _formkey = GlobalKey<FormState>();
+  final _formkey = GlobalKey<FormState>(); //key formakaia wakw id bakaryat
   final _auth =
-      FirebaseAuth.instance; //  _authinstanceka bo eshkrdn lagal firebaseauth
+      FirebaseAuth.instance; //  _auth instanceka bo eshkrdn lagal firebaseauth
 
   final TextEditingController passwordController = new TextEditingController();
   final TextEditingController confirmpassController =
@@ -27,10 +27,10 @@ class _RegisterState extends State<Register> {
   final TextEditingController emailController = new TextEditingController();
   final TextEditingController firstNameController = new TextEditingController();
 
-  // final TextEditingController mobile = new TextEditingController();
-  bool _isObscure = true;
+  bool _isObscure = true; // bo pshanyani password w shardnaway
   bool _isObscure2 = true;
-  // File? file;
+
+//  ama ba lista chwnka  drop down menua
   var options = [
     'Student',
     'Teacher',
@@ -50,6 +50,7 @@ class _RegisterState extends State<Register> {
           style: TextStyle(color: Colors.white, fontSize: 30),
         ),
         centerTitle: true,
+        //aw flexibla bo awaya ka appbaraka lla shweni xoia be ka scroll krd
         flexibleSpace: Container(
           decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -74,6 +75,7 @@ class _RegisterState extends State<Register> {
                 child: Container(
                   margin: EdgeInsets.all(12),
                   child: Form(
+                    // aw formkeya globalkeyakaia lasarawa ta3rifman krdwa
                     key: _formkey,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -84,7 +86,6 @@ class _RegisterState extends State<Register> {
                             child: Container(
                                 height: 150,
                                 child: Image.asset("imgs/logo.png"))),
-
                         SizedBox(
                           height: 10,
                         ),
@@ -106,13 +107,12 @@ class _RegisterState extends State<Register> {
                                 borderRadius: new BorderRadius.circular(20),
                               ),
                             ),
-                            validator: (value) {
-                              // Add validation logic for first name
-                            },
-                            onChanged: (value) {},
+                            // validator: (value) {
+                            //   // Add validation logic for first name
+                            // },
+                            // onChanged: (value) {},
                           ),
                         ),
-// Add a SizedBox for spacing
                         SizedBox(height: 10),
                         Padding(
                           padding: const EdgeInsets.all(4.0),
@@ -134,6 +134,8 @@ class _RegisterState extends State<Register> {
                                 borderRadius: new BorderRadius.circular(20),
                               ),
                             ),
+
+                            //VALIDATEY INPUTAKA AKA
                             validator: (value) {
                               if (value!.length == 0) {
                                 return "Email cannot be empty";
@@ -147,7 +149,8 @@ class _RegisterState extends State<Register> {
                               }
                             },
                             onChanged: (value) {},
-                            keyboardType: TextInputType.emailAddress,
+                            keyboardType: TextInputType
+                                .emailAddress, // ama shewazy keyboardakai ka pshant aya ka click lasar textfieldaka akai dyary akat masalan gar taybat ve va raqam awa keyboardy raqamt pshan aya
                           ),
                         ),
                         SizedBox(
@@ -220,7 +223,8 @@ class _RegisterState extends State<Register> {
                               filled: true,
                               fillColor: Colors.white,
                               hintText: 'Confirm Password',
-                              enabled: true,
+                              enabled:
+                                  true, // inputaka shty tya anusre bas gar false bu qufl abe eshy lasar nakre
                               contentPadding: const EdgeInsets.only(
                                   left: 14.0, bottom: 8.0, top: 15.0),
                               focusedBorder: OutlineInputBorder(
@@ -365,7 +369,7 @@ class _RegisterState extends State<Register> {
     );
   }
 
-/////nardni data bo firebase
+/////nardni data bo firebase bashi authentication methodakaman enable krdwa la pesha
   void signUp(String email, String password, String rool) async {
     CircularProgressIndicator();
     if (_formkey.currentState!.validate()) {
@@ -376,6 +380,7 @@ class _RegisterState extends State<Register> {
     }
   }
 
+//dataka anere bo firestore collection
   postDetailsToFirestore(String email, String rool) async {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     var user = _auth.currentUser;

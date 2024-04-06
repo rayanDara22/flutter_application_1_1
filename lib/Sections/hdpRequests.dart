@@ -67,6 +67,8 @@ class TopicRequestDetails {
     required this.similarityPercentage,
   });
 
+// datay documentaka ahenetawa bo  har requestek similarity w shtakai
+
   factory TopicRequestDetails.fromDocument(QueryDocumentSnapshot doc) {
     return TopicRequestDetails(
       documentId: doc.id,
