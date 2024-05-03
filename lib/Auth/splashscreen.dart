@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/Auth/login.dart';
 import 'package:flutter_application_1/Auth/register.dart';
 
 void main() {
@@ -47,7 +48,7 @@ class _SplashScreenState extends State<SplashScreen>
       if (status == AnimationStatus.completed) {
         // Navigate to the next screen
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Register()));
+            context, MaterialPageRoute(builder: (context) => LoginPage()));
       }
     });
   }

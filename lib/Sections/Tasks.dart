@@ -342,8 +342,14 @@ class TaskListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 247, 227, 250),
       appBar: AppBar(
-        title: Text('Task List'),
+        backgroundColor: Color.fromARGB(255, 168, 3, 197),
+        title: Center(
+            child: Text(
+          'Task List',
+          style: TextStyle(color: Colors.white),
+        )),
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance

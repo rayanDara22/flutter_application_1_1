@@ -35,7 +35,12 @@ class _CurrentTeacherTopicsState extends State<CurrentTeacherTopics> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Your Topics'),
+        backgroundColor: Color.fromARGB(255, 78, 33, 137),
+        title: Center(
+            child: Text(
+          'Your Topics',
+          style: TextStyle(color: Colors.white),
+        )),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: teacherTopicsStream,

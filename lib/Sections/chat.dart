@@ -93,8 +93,10 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 247, 245, 237),
       appBar: AppBar(
-        title: Text('Group Chat'),
+        backgroundColor: Color.fromARGB(255, 254, 89, 89),
+        title: Center(child: Text('Group Chat')),
       ),
       body: Column(
         children: [
@@ -176,14 +178,24 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
                     },
                     decoration: InputDecoration(
                       hintText: 'Type your message...',
+                      hintStyle: TextStyle(
+                          fontWeight: FontWeight.bold), // Bold hint text
                     ),
                   ),
                 ),
-                IconButton(
-                  icon: Icon(Icons.send),
-                  onPressed: () {
-                    _sendMessage(_messageController.text.trim());
-                  },
+                Container(
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(
+                        255, 254, 89, 89), // Set icon background color to blue
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.send),
+                    color: Colors.black, // Set icon color to white
+                    onPressed: () {
+                      _sendMessage(_messageController.text.trim());
+                    },
+                  ),
                 ),
               ],
             ),

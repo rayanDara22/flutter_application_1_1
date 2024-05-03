@@ -97,43 +97,51 @@ class _GradingScreenState extends State<GradingScreen> {
           builder: (BuildContext context, setState) {
             return AlertDialog(
               title: Text('Select Grade for Emails in $groupName'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  for (var email in emails)
-                    ListTile(
-                      title: Text(email.toString()),
-                      trailing: DropdownButton<String>(
-                        value: grades[email] ?? 'Grades',
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            grades[email] = newValue!;
-                          });
-                        },
-                        items: <String>[
-                          'Grades',
-                          '40',
-                          '50',
-                          '60',
-                          '70',
-                          '80',
-                          '90',
-                          '100'
-                        ].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
+              content: Container(
+                // Wrap content in Container for background color
+                color: Colors.white, // Set background color of dialog content
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    for (var email in emails)
+                      ListTile(
+                        title: Text(email.toString()),
+                        trailing: DropdownButton<String>(
+                          value: grades[email] ?? 'Grades',
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              grades[email] = newValue!;
+                            });
+                          },
+                          items: <String>[
+                            'Grades',
+                            '40',
+                            '50',
+                            '60',
+                            '70',
+                            '80',
+                            '90',
+                            '100'
+                          ].map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
                       ),
-                    ),
-                ],
+                  ],
+                ),
               ),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop(); // Close the dialog
                   },
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.red, // Set Cancel button text color
+                  ),
                   child: Text('Cancel'),
                 ),
                 TextButton(
@@ -141,6 +149,11 @@ class _GradingScreenState extends State<GradingScreen> {
                     _submitGrades(groupName);
                     Navigator.of(context).pop(); // Close the dialog
                   },
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor:
+                        Colors.blue, // Set Submit button text color
+                  ),
                   child: Text('Submit'),
                 ),
               ],

@@ -89,8 +89,10 @@ class _TeacherGroupChatScreenState extends State<TeacherGroupChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 209, 208, 208),
       appBar: AppBar(
-        title: Text('Teacher Group Chat'),
+        backgroundColor: Color.fromARGB(255, 106, 181, 241),
+        title: Center(child: Text('Teacher Group Chat')),
       ),
       body: Column(
         children: [
@@ -157,8 +159,10 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 231, 233, 254),
       appBar: AppBar(
-        title: Text('Group Chat'),
+        backgroundColor: Color.fromARGB(255, 72, 101, 244),
+        title: Center(child: Text('Group Chat')),
       ),
       body: Column(
         children: [
@@ -219,15 +223,26 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
                     },
                     decoration: InputDecoration(
                       hintText: 'Type your message...',
+                      hintStyle: TextStyle(
+                          fontWeight: FontWeight.bold), // Bold hint text
                     ),
                   ),
                 ),
-                IconButton(
-                  icon: Icon(Icons.send),
-                  onPressed: () {
-                    _sendMessage(
-                        widget.groupId, _messageController.text.trim());
-                  },
+                Container(
+                  // Wrap IconButton with Container for color customization
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(
+                        255, 72, 101, 244), // Set icon background color to blue
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    icon: Icon(Icons.send),
+                    color: Colors.black, // Set icon color to white
+                    onPressed: () {
+                      _sendMessage(
+                          widget.groupId, _messageController.text.trim());
+                    },
+                  ),
                 ),
               ],
             ),

@@ -6,10 +6,14 @@ class RequestPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 246, 247, 245),
       appBar: AppBar(
-        title: Text(
-          'Topic Requests',
-          style: TextStyle(color: Colors.white),
+        backgroundColor: Color.fromARGB(255, 244, 222, 25),
+        title: Center(
+          child: Text(
+            'Topic Requests',
+            style: TextStyle(color: Colors.black),
+          ),
         ),
       ),
       body: StreamBuilder<User?>(
