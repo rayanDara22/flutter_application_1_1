@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class GradingScreen extends StatefulWidget {
   @override
@@ -6,13 +8,27 @@ class GradingScreen extends StatefulWidget {
 }
 
 class _GradingScreenState extends State<GradingScreen> {
-  List<String> students = [
-    'Dalia Ako',
-    'Dya Jalal',
-    'Rayan Dara',
-  ];
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  Map<String, String> grades = {}; // Changed to a map
+  String selectedGroup = '';
+  late String teacherId;
 
-  List<String> grades = List.filled(5, 'Grades');
+  @override
+  void initState() {
+    super.initState();
+    fetchTeacherId();
+  }
+
+  Future<void> fetchTeacherId() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      setState(() {
+        teacherId = user.uid;
+      });
+    } else {
+      // Handle the case when the user is not authenticated
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,104 +52,119 @@ class _GradingScreenState extends State<GradingScreen> {
           },
         ),
       ),
-      body: ListView.builder(
-        itemCount: students.length,
-        itemBuilder: (context, index) {
-          return Column(
-            children: <Widget>[
+      body: StreamBuilder<QuerySnapshot>(
+        stream: _firestore
+            .collection('groups')
+            .where('teacherId', isEqualTo: teacherId)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          List<Widget> groupWidgets = [];
+          snapshot.data!.docs.forEach((doc) {
+            String groupName = doc['groupName'];
+            groupWidgets.add(
               ListTile(
-                title: Text(
-                  students[index],
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
-                  ),
-                ),
-                trailing: DropdownButton<String>(
-                  value: grades[index],
-                  onChanged: (String? newValue) {
-                    _updateGrade(index, newValue!);
-                  },
-                  items: <String>[
-                    'Grades',
-                    '40',
-                    '50',
-                    '60',
-                    '70',
-                    '80',
-                    '90',
-                    '100'
-                  ].map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                ),
+                title: Text(groupName),
+                onTap: () {
+                  setState(() {
+                    selectedGroup = groupName;
+                    grades.clear(); // Clear grades map
+                  });
+                  _showEmailsDialog(groupName, doc['studentEmails']);
+                },
               ),
-              Divider(
-                color: Colors.black,
-                thickness: 0.7,
-              ), // Divider between each student
-            ],
+            );
+          });
+
+          return ListView(
+            children: groupWidgets,
           );
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Color.fromARGB(255, 69, 143, 218),
-        onPressed: () {
-          _showConfirmationDialog(context);
-        },
-        child: Icon(
-          Icons.save,
-          color: Colors.white,
-        ),
       ),
     );
   }
 
-  void _updateGrade(int index, String newValue) {
-    setState(() {
-      grades[index] = newValue;
-    });
-  }
-
-  void _showConfirmationDialog(BuildContext context) {
+  void _showEmailsDialog(String groupName, List<dynamic> emails) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Submit Grades'),
-          content:
-              Text('Are you sure you want to submit the grades to students?'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                _submitGrades(); // Call a function to submit grades
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: Text('Submit'),
-            ),
-          ],
+        return StatefulBuilder(
+          builder: (BuildContext context, setState) {
+            return AlertDialog(
+              title: Text('Select Grade for Emails in $groupName'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  for (var email in emails)
+                    ListTile(
+                      title: Text(email.toString()),
+                      trailing: DropdownButton<String>(
+                        value: grades[email] ?? 'Grades',
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            grades[email] = newValue!;
+                          });
+                        },
+                        items: <String>[
+                          'Grades',
+                          '40',
+                          '50',
+                          '60',
+                          '70',
+                          '80',
+                          '90',
+                          '100'
+                        ].map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                ],
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the dialog
+                  },
+                  child: Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    _submitGrades(groupName);
+                    Navigator.of(context).pop(); // Close the dialog
+                  },
+                  child: Text('Submit'),
+                ),
+              ],
+            );
+          },
         );
       },
     );
   }
 
-  void _submitGrades() {
-    // Logic to submit grades
-    print('Grades submitted: $grades');
+  void _submitGrades(String groupName) {
+    // Iterate through the grades map to submit each email's grade
+    grades.forEach((email, grade) {
+      if (grade != 'Grades') {
+        _firestore.collection('grades').add({
+          'groupName': groupName,
+          'email': email,
+          'grade': grade,
+        }).then((value) {
+          print('Grade submitted: $grade for $email in $groupName');
+        }).catchError((error) {
+          print('Error submitting grade for $email in $groupName: $error');
+        });
+      }
+    });
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: GradingScreen(),
-  ));
 }

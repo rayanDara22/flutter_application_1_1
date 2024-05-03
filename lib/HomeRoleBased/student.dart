@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Auth/login.dart';
 import 'package:flutter_application_1/Sections/chat.dart';
-import 'package:flutter_application_1/Sections/discussion.dart';
 import 'package:flutter_application_1/Sections/studentgroupchat.dart';
+import 'package:flutter_application_1/Sections/studentseeTask.dart';
 import 'package:flutter_application_1/Sections/topics.dart';
 
 class Student extends StatefulWidget {
@@ -67,7 +67,8 @@ class _StudentState extends State<Student> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => GroupChatPageStud()),
+                          builder: (context) => GroupChatScreen(),
+                        ),
                       );
                     }),
                     _buildCard(context, 'Attendance',
@@ -79,9 +80,22 @@ class _StudentState extends State<Student> {
                     _buildCard(context, 'Timetable',
                         'https://cdn0.iconfinder.com/data/icons/mentoring-and-training-16/66/38_schedule_planning_scheme_calendar_appointment-512.png',
                         onPressed: () {}),
-                    _buildCard(context, 'Tasks',
-                        'https://cdn-icons-png.flaticon.com/512/11364/11364993.png',
-                        onPressed: () {}),
+                    _buildCard(
+                      context,
+                      'Tasks',
+                      'https://cdn-icons-png.flaticon.com/512/11364/11364993.png',
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => StudentTaskListPage(
+                                studentEmail:
+                                    FirebaseAuth.instance.currentUser!.email ??
+                                        ''),
+                          ),
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),

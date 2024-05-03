@@ -132,7 +132,8 @@ class RequestCard extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: () {
-                acceptRequest(requestDetails.documentId, requestDetails);
+                acceptRequest(
+                    requestDetails.documentId, requestDetails, context);
               },
               child: Text('Accept'),
             ),
@@ -149,20 +150,56 @@ class RequestCard extends StatelessWidget {
     );
   }
 
-  void acceptRequest(String documentId, RequestDetails requestDetails) async {
+  void acceptRequest(String documentId, RequestDetails requestDetails,
+      BuildContext context) async {
+    // Check if the student's email is already associated with another group
+    bool isAlreadyInGroup =
+        await checkIfStudentAlreadyInGroup(requestDetails.studentEmails);
+
+    if (isAlreadyInGroup) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text(
+                'One of the students is already in another group. Cannot accept this request.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+      return; // Exit the method if the student is already in a group
+    }
+
+    // Update request status to "Accepted"
     await FirebaseFirestore.instance
         .collection('requests')
         .doc(documentId)
         .update({'status': 'Accepted'});
 
+    // Generate a unique group name (optional)
+    String groupName =
+        requestDetails.topicName; // Use the topic name for simplicity
+    // You can implement logic to generate a more unique name here
+
+    // Create a new group document with groupName
     DocumentReference groupRef =
         await FirebaseFirestore.instance.collection('groups').add({
       'teacherId': requestDetails.teacherId,
       'studentEmails': requestDetails.studentEmails,
+      'groupName': groupName, // Add the groupName field
     });
 
     String groupId = groupRef.id;
 
+    // Update student users with groupId
     requestDetails.studentEmails.forEach((email) async {
       QuerySnapshot userSnapshot = await FirebaseFirestore.instance
           .collection('users')
@@ -180,7 +217,32 @@ class RequestCard extends StatelessWidget {
       }
     });
 
-    print('Request accepted successfully! Group created with ID: $groupId');
+    // Create a new group chat document in group_chats collection
+    await FirebaseFirestore.instance
+        .collection('group_chats')
+        .doc(groupId)
+        .set({
+      'groupId': groupId, // Add groupId field to relate to the group
+      'teacherId': requestDetails.teacherId, // Add teacherId field
+      'messages': [], // Initialize messages as an empty array
+    });
+
+    print(
+        'Request accepted successfully! Group created with ID: $groupId and name: $groupName');
+  }
+
+  Future<bool> checkIfStudentAlreadyInGroup(List<String> studentEmails) async {
+    for (String email in studentEmails) {
+      QuerySnapshot groupSnapshot = await FirebaseFirestore.instance
+          .collection('groups')
+          .where('studentEmails', arrayContains: email)
+          .get();
+
+      if (groupSnapshot.docs.isNotEmpty) {
+        return true; // Student is already in a group
+      }
+    }
+    return false; // Student is not in any group
   }
 
   void denyRequest(String documentId) async {

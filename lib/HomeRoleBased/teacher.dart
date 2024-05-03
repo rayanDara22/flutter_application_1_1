@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Auth/login.dart';
 import 'package:flutter_application_1/HomeRoleBased/student.dart';
 import 'package:flutter_application_1/Sections/CurentTeachetTopic.dart';
+// import 'package:flutter_application_1/Sections/Discussion.dart';
 import 'package:flutter_application_1/Sections/Tasks.dart';
 import 'package:flutter_application_1/Sections/aatendance.dart';
-import 'package:flutter_application_1/Sections/discussion.dart';
+// import 'package:flutter_application_1/Sections/discussion.dart' as discussion;
 import 'package:flutter_application_1/Sections/grading.dart';
 import 'package:flutter_application_1/Sections/studentreq.dart';
+import 'package:flutter_application_1/Sections/teacherChat.dart';
 import 'package:flutter_application_1/Sections/teachertopic.dart';
 import 'package:flutter_application_1/Sections/timetable.dart';
 import 'package:flutter_application_1/Sections/topics.dart';
@@ -74,15 +76,6 @@ class _TeacherState extends State<Teacher> {
                       MaterialPageRoute(builder: (context) => Taskk()),
                     );
                   }),
-                  _buildCard(context, 'Discussion',
-                      'https://cdn-icons-png.flaticon.com/512/1459/1459330.png',
-                      onPressed: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //       builder: (context) => DiscussionScreen()),
-                    // );
-                  }),
                   _buildCard(context, 'Grading',
                       'https://cdn-icons-png.flaticon.com/512/7587/7587280.png',
                       onPressed: () {
@@ -112,10 +105,19 @@ class _TeacherState extends State<Teacher> {
                   _buildCard(context, 'Students Requests',
                       'https://png.pngtree.com/png-vector/20220519/ourmid/pngtree-approved-request-icon-color-flat-png-image_4696193.png',
                       onPressed: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => RequestPage()),
-                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => RequestPage()),
+                    );
+                  }),
+                  _buildCard(context, 'Discussion',
+                      'https://cdn-icons-png.flaticon.com/512/1459/1459330.png',
+                      onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TeacherGroupChatScreen()),
+                    );
                   }),
                 ],
               ),
@@ -205,16 +207,7 @@ class _TeacherState extends State<Teacher> {
             context,
             MaterialPageRoute(
               builder: (context) =>
-                  GroupListPage(), // Navigate to RequestScreen for Request Student
-            ),
-          );
-        } else if (title == 'Timetable') {
-          // Check for 'Request Student' title
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  TimetableScreen(), // Navigate to RequestScreen for Request Student
+                  TeacherGroupChatScreen(), // Navigate to RequestScreen for Request Student
             ),
           );
         } else if (title == 'Students Requests') {
@@ -237,6 +230,15 @@ class _TeacherState extends State<Teacher> {
             context,
             MaterialPageRoute(
               builder: (context) => Taskk(),
+            ),
+          );
+        } else if (title == 'Timetable') {
+          // Check for 'Request Student' title
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  TimetableScreen(), // Navigate to RequestScreen for Request Student
             ),
           );
         }

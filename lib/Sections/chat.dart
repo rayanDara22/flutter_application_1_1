@@ -1,65 +1,163 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_application_1/Sections/discussion.dart'; // Import the correct GroupDetails class
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart'; // Import intl package for date formatting
 
-// Your GroupChatPage code here...
-
-class GroupChatPage extends StatefulWidget {
-  final GroupDetails groupDetails; // No need for 'discussion.' prefix here
-
-  GroupChatPage(this.groupDetails);
-
+class GroupChatScreen extends StatefulWidget {
   @override
-  _GroupChatPageState createState() => _GroupChatPageState();
+  _GroupChatScreenState createState() => _GroupChatScreenState();
 }
 
-class _GroupChatPageState extends State<GroupChatPage> {
-  final TextEditingController _messageController = TextEditingController();
+class _GroupChatScreenState extends State<GroupChatScreen> {
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  String? currentUserID;
+  TextEditingController _messageController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentUserID();
+  }
+
+  Future<void> getCurrentUserID() async {
+    final User? user = _auth.currentUser;
+    if (user != null) {
+      setState(() {
+        currentUserID = user.uid;
+      });
+    }
+  }
+
+  Future<String?> getCurrentUserGroupId() async {
+    if (currentUserID != null) {
+      try {
+        // Get the user's document from the users collection
+        DocumentSnapshot userDoc =
+            await _firestore.collection('users').doc(currentUserID).get();
+        if (userDoc.exists) {
+          // Cast data to Map<String, dynamic>
+          Map<String, dynamic> userData =
+              userDoc.data() as Map<String, dynamic>;
+          // Extract the groupId from the user's document
+          return userData['groupId'] as String?;
+        }
+      } catch (e) {
+        print('Error getting current user groupId: $e');
+      }
+    }
+    return null;
+  }
+
+  void _sendMessage(String messageText) async {
+    if (messageText.isNotEmpty && currentUserID != null) {
+      try {
+        String? groupId = await getCurrentUserGroupId();
+
+        if (groupId != null) {
+          // Get the current user's email
+          String? userEmail = _auth.currentUser?.email;
+
+          if (userEmail != null) {
+            // Get the current timestamp
+            DateTime currentTime = DateTime.now();
+
+            // Format the timestamp into a readable string
+            String formattedTimestamp =
+                DateFormat('yyyy-MM-dd HH:mm:ss').format(currentTime);
+
+            // Create the new message object with the formatted timestamp, sender ID, and email
+            Map<String, dynamic> newMessage = {
+              'text': messageText,
+              'sender': currentUserID,
+              'senderEmail': userEmail,
+              'timestamp': formattedTimestamp,
+            };
+
+            // Update the group chat document to add the new message to the messages array
+            await _firestore.collection('group_chats').doc(groupId).update({
+              'messages': FieldValue.arrayUnion([newMessage])
+            });
+
+            _messageController.clear();
+          } else {
+            print('Error: Current user email is null.');
+          }
+        }
+      } catch (e) {
+        print('Error sending message: $e');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Group Chat - ${widget.groupDetails.groupId}'),
+        title: Text('Group Chat'),
       ),
       body: Column(
         children: [
           Expanded(
-            child: StreamBuilder<DocumentSnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('group_chats')
-                  .doc(widget.groupDetails.groupId)
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+            child: FutureBuilder(
+              future: getCurrentUserGroupId(),
+              builder: (context, AsyncSnapshot<String?> groupIdSnapshot) {
+                if (groupIdSnapshot.connectionState ==
+                    ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
                 }
 
-                if (!snapshot.hasData || !snapshot.data!.exists) {
-                  return Center(child: Text('No messages yet.'));
+                if (!groupIdSnapshot.hasData || groupIdSnapshot.data == null) {
+                  return Center(
+                    child: Text('No group chat found.'),
+                  );
                 }
 
-                var data = snapshot.data!.data() as Map<String, dynamic>?;
+                String groupId = groupIdSnapshot.data!;
+                return StreamBuilder(
+                  stream: _firestore
+                      .collection('group_chats')
+                      .doc(groupId)
+                      .snapshots(),
+                  builder:
+                      (context, AsyncSnapshot<DocumentSnapshot> chatSnapshot) {
+                    if (chatSnapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
 
-                if (data == null || !data.containsKey('messages')) {
-                  return Center(child: Text('No messages yet.'));
-                }
+                    if (!chatSnapshot.hasData || !chatSnapshot.data!.exists) {
+                      return Center(
+                        child: Text('No group chat details found.'),
+                      );
+                    }
 
-                var messages = data['messages'] as List?;
+                    var groupChatData =
+                        chatSnapshot.data!.data() as Map<String, dynamic>;
+                    List<dynamic> messages = groupChatData['messages'] ?? [];
 
-                if (messages == null || messages.isEmpty) {
-                  return Center(child: Text('No messages yet.'));
-                }
+                    return ListView.builder(
+                      itemCount: messages.length,
+                      itemBuilder: (context, index) {
+                        var message = messages[index]
+                            as Map<String, dynamic>; // Explicit cast
+                        String senderEmail = message['senderEmail']
+                            as String; // Extract sender email
+                        String messageText =
+                            message['text'] as String; // Extract message text
+                        String formattedTimestamp = message['timestamp']
+                            as String; // Extract formatted timestamp
 
-                return ListView.builder(
-                  itemCount: messages.length,
-                  itemBuilder: (context, index) {
-                    var message = messages[index] as Map<String, dynamic>;
-                    return ListTile(
-                      title: Text(message['text'] ?? ''),
-                      subtitle:
-                          Text('Sent by: ${message['senderEmail'] ?? ''}'),
+                        return ListTile(
+                          title: Text(messageText),
+                          subtitle: Text(
+                              'Sender Email: $senderEmail - Timestamp: $formattedTimestamp'),
+                        );
+                      },
                     );
                   },
                 );
@@ -73,16 +171,18 @@ class _GroupChatPageState extends State<GroupChatPage> {
                 Expanded(
                   child: TextField(
                     controller: _messageController,
-                    decoration:
-                        InputDecoration(hintText: 'Type your message...'),
+                    onSubmitted: (value) {
+                      _sendMessage(value);
+                    },
+                    decoration: InputDecoration(
+                      hintText: 'Type your message...',
+                    ),
                   ),
                 ),
                 IconButton(
                   icon: Icon(Icons.send),
                   onPressed: () {
-                    if (_messageController.text.isNotEmpty) {
-                      sendMessage(_messageController.text);
-                    }
+                    _sendMessage(_messageController.text.trim());
                   },
                 ),
               ],
@@ -93,38 +193,9 @@ class _GroupChatPageState extends State<GroupChatPage> {
     );
   }
 
-  void sendMessage(String text) async {
-    var currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser != null) {
-      var messageData = {
-        'text': text,
-        'senderEmail': currentUser.email,
-        'timestamp': Timestamp.now(),
-      };
-
-      var chatDocRef = FirebaseFirestore.instance
-          .collection('group_chats')
-          .doc(widget.groupDetails.groupId);
-
-      try {
-        var chatDoc = await chatDocRef.get();
-        if (!chatDoc.exists) {
-          // Create the document if it doesn't exist
-          await chatDocRef.set({
-            'messages': [messageData], // Start with the new message
-          });
-        } else {
-          // Document exists, update the messages array
-          await chatDocRef.update({
-            'messages': FieldValue.arrayUnion([messageData]),
-          });
-        }
-
-        _messageController.clear();
-      } catch (e) {
-        print('Error sending message: $e');
-        // Handle error (show snackbar, toast, etc.)
-      }
-    }
+  @override
+  void dispose() {
+    _messageController.dispose();
+    super.dispose();
   }
 }

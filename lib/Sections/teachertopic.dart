@@ -95,7 +95,8 @@ class _TopicCardState extends State<TopicCard> {
     List<String> emails = [
       emailController1.text.trim(),
       emailController2.text.trim(),
-      emailController3.text.trim(),
+      emailController3.text
+          .trim(), // aw trima spacey zyaya asretawa lakaty nardny bo naw firestore
     ];
 
     // Check if the request has already been submitted by the student
@@ -144,6 +145,8 @@ class _TopicCardState extends State<TopicCard> {
       'studentEmails': existingEmails,
       'teacherId': widget.teacherId,
       'topicName': widget.topicDetails.topicName,
+      'GroupName': widget
+          .topicDetails.topicName, // Assigning GroupName with the topic name
       'status': 'Pending', // You can set an initial status
     };
 
