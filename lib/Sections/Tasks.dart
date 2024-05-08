@@ -335,7 +335,7 @@ class TaskListPage extends StatelessWidget {
           .update({'status': 'Done'});
     } catch (e) {
       print('Error marking task as done: $e');
-      // Handle error
+      // Handle error....
     }
   }
 
