@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Auth/login.dart';
 import 'package:flutter_application_1/Sections/chat.dart';
+import 'package:flutter_application_1/Sections/studentgrade.dart';
 import 'package:flutter_application_1/Sections/studentgroupchat.dart';
 import 'package:flutter_application_1/Sections/studentseeTask.dart';
 import 'package:flutter_application_1/Sections/topics.dart';
@@ -76,7 +77,14 @@ class _StudentState extends State<Student> {
                         onPressed: () {}),
                     _buildCard(context, 'Grading',
                         'https://cdn3.iconfinder.com/data/icons/100-education-5/512/62_Best_Grade-512.png',
-                        onPressed: () {}),
+                        onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => GradesPage(),
+                        ),
+                      );
+                    }),
                     _buildCard(context, 'Timetable',
                         'https://cdn0.iconfinder.com/data/icons/mentoring-and-training-16/66/38_schedule_planning_scheme_calendar_appointment-512.png',
                         onPressed: () {}),
