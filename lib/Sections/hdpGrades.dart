@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class GradingScreen extends StatefulWidget {
+class GradingScreen2 extends StatefulWidget {
   @override
-  _GradingScreenState createState() => _GradingScreenState();
+  _GradingScreen2State createState() => _GradingScreen2State();
 }
 
-class _GradingScreenState extends State<GradingScreen> {
+class _GradingScreen2State extends State<GradingScreen2> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   Map<String, String> grades = {}; // Changed to a map
   String selectedGroup = '';
@@ -51,12 +51,17 @@ class _GradingScreenState extends State<GradingScreen> {
             Navigator.pop(context);
           },
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.list),
+            onPressed: () {
+              _showGradesList(); // Show the list of groups and grades
+            },
+          ),
+        ],
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: _firestore
-            .collection('groups')
-            .where('teacherId', isEqualTo: teacherId)
-            .snapshots(),
+        stream: _firestore.collection('groups').snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Center(
@@ -184,7 +189,7 @@ class _GradingScreenState extends State<GradingScreen> {
     // Iterate through the grades map to submit each email's grade
     grades.forEach((email, grade) {
       if (grade != 'Grades') {
-        _firestore.collection('grades').add({
+        _firestore.collection('hdpGrades').add({
           'groupName': groupName,
           'email': email,
           'grade': grade,
@@ -206,6 +211,105 @@ class _GradingScreenState extends State<GradingScreen> {
       ),
     );
   }
+
+  void _showGradesList() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Groups and Grades List'),
+          content: Container(
+            width: double.maxFinite,
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: constraints.maxHeight,
+                    minWidth: constraints.maxWidth,
+                  ),
+                  child: IntrinsicHeight(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _buildGradesList(),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildGradesList() {
+    return StreamBuilder<QuerySnapshot>(
+      stream: _firestore.collection('grades').snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
+        }
+        if (snapshot.hasError) {
+          return Text('Error fetching data');
+        }
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          return Text('No grades data available');
+        }
+
+        // Group grades by group name
+        Map<String, List<DocumentSnapshot>> groupedGrades = {};
+        snapshot.data!.docs.forEach((gradeData) {
+          String groupName = gradeData['groupName'];
+          groupedGrades.putIfAbsent(groupName, () => []);
+          groupedGrades[groupName]!.add(gradeData);
+        });
+
+        return ListView.builder(
+          shrinkWrap: true,
+          itemCount: groupedGrades.length,
+          itemBuilder: (context, index) {
+            String groupName = groupedGrades.keys.elementAt(index);
+            List<DocumentSnapshot> groupGrades = groupedGrades[groupName]!;
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Text(
+                    groupName,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: groupGrades.length,
+                  itemBuilder: (context, index) {
+                    var gradeData = groupGrades[index];
+                    String email = gradeData['email'];
+                    String grade = gradeData['grade'];
+
+                    return ListTile(
+                      title: Text(email),
+                      subtitle: Text('Grade: $grade'),
+                    );
+                  },
+                ),
+                Divider(),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
 }
 
 class GradesDetailScreen extends StatelessWidget {
@@ -222,7 +326,7 @@ class GradesDetailScreen extends StatelessWidget {
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
-            .collection('grades')
+            .collection('hdpGrades')
             .where('groupName', isEqualTo: groupName)
             .snapshots(),
         builder: (context, snapshot) {
@@ -252,11 +356,49 @@ class GradesDetailScreen extends StatelessWidget {
               return ListTile(
                 title: Text(email),
                 subtitle: Text('Grade: $grade'),
+                trailing: IconButton(
+                  icon: Icon(Icons.edit),
+                  onPressed: () {
+                    _editGrade(
+                        context, gradeData.id); // Pass document ID for editing
+                  },
+                ),
               );
             },
           );
         },
       ),
+    );
+  }
+
+  void _editGrade(BuildContext context, String gradeId) {
+    // Implement your logic for editing the grade here
+    // You can navigate to a new screen or show a dialog for editing
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // Your edit grade dialog/widget
+        return AlertDialog(
+          title: Text('Edit Grade'),
+          content: Text('Implement your edit grade UI here'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Logic for saving edited grade
+                // You can use Firestore update method to update the grade
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Save'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

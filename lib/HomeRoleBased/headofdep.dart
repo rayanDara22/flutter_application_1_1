@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Sections/HDPTopicP.dart';
+import 'package:flutter_application_1/Sections/hdpGrades.dart';
 import 'package:flutter_application_1/Sections/hdpRequests.dart';
 import 'package:flutter_application_1/Sections/hdpSeeTopic.dart';
 import 'package:flutter_application_1/Sections/teachertopic.dart';
@@ -42,6 +43,7 @@ class _StudentState extends State<HeadOfDepartment> {
                     onPressed: () {}),
                 _buildCard(context, 'Teachers Requests', Icons.person,
                     onPressed: () {}),
+                _buildCard(context, 'Grading', Icons.grade, onPressed: () {}),
               ],
             ),
           ),
@@ -63,6 +65,12 @@ class _StudentState extends State<HeadOfDepartment> {
         iconColor = Colors.white;
         textColor = Colors.white;
         textSize = 19.0;
+        textWeight = FontWeight.bold;
+        break;
+      case 'Grading':
+        cardColor = Color.fromARGB(255, 200, 255, 186);
+        textColor = Colors.white;
+        textSize = 20.0;
         textWeight = FontWeight.bold;
         break;
 
@@ -98,6 +106,14 @@ class _StudentState extends State<HeadOfDepartment> {
                   HODRequestPage(), // Navigate to RequestScreen for Request Student
             ),
           );
+        } else if (title == 'Grading') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  GradingScreen2(), // Navigate to RequestScreen for Request Student
+            ),
+          );
         } else {
           onPressed?.call();
         }
@@ -111,7 +127,6 @@ class _StudentState extends State<HeadOfDepartment> {
             Icon(
               icon,
               size: 48,
-              color: iconColor,
             ),
             SizedBox(height: 16),
             Text(
@@ -128,18 +143,4 @@ class _StudentState extends State<HeadOfDepartment> {
       ),
     );
   }
-
-  // appBar: AppBar(
-  //   title: Text("Student"),
-  //   actions: [
-  //     IconButton(
-  //       onPressed: () {
-  //         logout(context);
-  //       },
-  //       icon: Icon(
-  //         Icons.logout,
-  //       ),
-  //     )
-  //   ],
-  // ),
 }

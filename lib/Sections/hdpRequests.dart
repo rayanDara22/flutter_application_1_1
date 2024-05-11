@@ -54,8 +54,8 @@ class TopicRequestDetails {
   final String description;
   final String teacherId;
   final String status;
-  final String similarTopicId;
-  final double similarityPercentage;
+  // final String similarTopicId;
+  // final double similarityPercentage;
 
   TopicRequestDetails({
     required this.documentId,
@@ -63,8 +63,8 @@ class TopicRequestDetails {
     required this.description,
     required this.teacherId,
     required this.status,
-    required this.similarTopicId,
-    required this.similarityPercentage,
+    // required this.similarTopicId,
+    // required this.similarityPercentage,
   });
 
 // datay documentaka ahenetawa bo  har requestek similarity w shtakai
@@ -76,8 +76,8 @@ class TopicRequestDetails {
       description: (doc['description'] ?? '').toString(),
       teacherId: (doc['teacherId'] ?? '').toString(),
       status: (doc['status'] ?? '').toString(),
-      similarTopicId: (doc['similarTopicId'] ?? '').toString(),
-      similarityPercentage: (doc['similarityPercentage'] ?? 0).toDouble(),
+      // similarTopicId: (doc['similarTopicId'] ?? '').toString(),
+      // similarityPercentage: (doc['similarityPercentage'] ?? 0).toDouble(),
     );
   }
 }
@@ -120,44 +120,44 @@ class TopicRequestCard extends StatelessWidget {
                     color: const Color.fromARGB(255, 8, 58, 99),
                   ),
                 ),
-                Text(
-                  'Similarity Percentage: ${requestDetails.similarityPercentage}%',
-                  style: TextStyle(
-                    color: const Color.fromARGB(255, 8, 58, 99),
-                  ),
-                ),
-                FutureBuilder(
-                  future: getSimilarTopicDetails(requestDetails.similarTopicId),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator();
-                    }
-                    if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    }
-                    if (!snapshot.hasData) {
-                      return Text('Loading...');
-                    }
-                    final topicDetails = snapshot.data as TopicDetails;
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Related Topic: ${topicDetails.topicName}',
-                          style: TextStyle(
-                            color: const Color.fromARGB(255, 8, 58, 99),
-                          ),
-                        ),
-                        Text(
-                          'Related Topic Description: ${topicDetails.description}',
-                          style: TextStyle(
-                            color: const Color.fromARGB(255, 8, 58, 99),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
+                // Text(
+                //   'Similarity Percentage: ${requestDetails.similarityPercentage}%',
+                //   style: TextStyle(
+                //     color: const Color.fromARGB(255, 8, 58, 99),
+                //   ),
+                // ),
+                // FutureBuilder(
+                //   future: getSimilarTopicDetails(requestDetails.similarTopicId),
+                //   builder: (context, snapshot) {
+                //     if (snapshot.connectionState == ConnectionState.waiting) {
+                //       return CircularProgressIndicator();
+                //     }
+                //     if (snapshot.hasError) {
+                //       return Text('Error: ${snapshot.error}');
+                //     }
+                //     if (!snapshot.hasData) {
+                //       return Text('Loading...');
+                //     }
+                //     final topicDetails = snapshot.data as TopicDetails;
+                //     return Column(
+                //       crossAxisAlignment: CrossAxisAlignment.start,
+                //       children: [
+                //         Text(
+                //           'Related Topic: ${topicDetails.topicName}',
+                //           style: TextStyle(
+                //             color: const Color.fromARGB(255, 8, 58, 99),
+                //           ),
+                //         ),
+                //         Text(
+                //           'Related Topic Description: ${topicDetails.description}',
+                //           style: TextStyle(
+                //             color: const Color.fromARGB(255, 8, 58, 99),
+                //           ),
+                //         ),
+                //       ],
+                //     );
+                //   },
+                // ),
               ],
             ),
           ),
@@ -181,17 +181,6 @@ class TopicRequestCard extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  Future<TopicDetails?> getSimilarTopicDetails(String similarTopicId) async {
-    final snapshot = await FirebaseFirestore.instance
-        .collection('topics')
-        .doc(similarTopicId)
-        .get();
-    if (snapshot.exists) {
-      return TopicDetails.fromSnapshot(snapshot);
-    }
-    return null;
   }
 
   void acceptRequest(TopicRequestDetails request) async {
