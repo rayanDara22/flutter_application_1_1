@@ -102,8 +102,8 @@ class _TeacherState extends State<Teacher> {
                           builder: (context) => TimetableScreen()),
                     );
                   }),
-                  _buildCard(context, 'Students Requests',
-                      'https://png.pngtree.com/png-vector/20220519/ourmid/pngtree-approved-request-icon-color-flat-png-image_4696193.png',
+                  _buildCard(context, 'S-Reuqests',
+                      'https://th.bing.com/th/id/R.5652602b376e8f04ba5b7af003bd9fa9?rik=%2fRZvy4oi%2bGBD9w&pid=ImgRaw&r=0',
                       onPressed: () {
                     Navigator.push(
                       context,
@@ -172,7 +172,7 @@ class _TeacherState extends State<Teacher> {
         textSize = 20.0;
         textWeight = FontWeight.bold;
         break;
-      case 'Students Requests':
+      case 'S-Reuqests':
         cardColor = Color.fromARGB(255, 49, 172, 86);
         textColor = Colors.white;
         textSize = 17.0;
@@ -210,7 +210,7 @@ class _TeacherState extends State<Teacher> {
                   TeacherGroupChatScreen(), // Navigate to RequestScreen for Request Student
             ),
           );
-        } else if (title == 'Students Requests') {
+        } else if (title == 'S-Reuqests') {
           Navigator.push(
             context,
             MaterialPageRoute(

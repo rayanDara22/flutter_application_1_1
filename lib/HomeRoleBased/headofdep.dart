@@ -41,7 +41,7 @@ class _StudentState extends State<HeadOfDepartment> {
               children: [
                 _buildCard(context, 'Topic', Icons.topic_outlined,
                     onPressed: () {}),
-                _buildCard(context, 'Teachers Requests', Icons.person,
+                _buildCard(context, 'T-Requests', Icons.person,
                     onPressed: () {}),
                 _buildCard(context, 'Grading', Icons.grade, onPressed: () {}),
               ],
@@ -74,7 +74,7 @@ class _StudentState extends State<HeadOfDepartment> {
         textWeight = FontWeight.bold;
         break;
 
-      case 'Teachers Requests':
+      case 'T-Requests':
         cardColor = Color.fromARGB(255, 158, 27, 153);
         iconColor = Colors.white;
         textColor = Colors.white;
@@ -98,7 +98,7 @@ class _StudentState extends State<HeadOfDepartment> {
                   ), // Navigate to DetailsScreen for Topic
             ),
           );
-        } else if (title == 'Teachers Requests') {
+        } else if (title == 'T-Requests') {
           Navigator.push(
             context,
             MaterialPageRoute(
