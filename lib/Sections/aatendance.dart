@@ -128,9 +128,3 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     );
   }
 }
-
-void main() {
-  runApp(MaterialApp(
-    home: AttendanceScreen(),
-  ));
-}

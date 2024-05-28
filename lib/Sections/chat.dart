@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart'; // Import intl package for date formatting
 
+//hy talaba
+
 class GroupChatScreen extends StatefulWidget {
   @override
   _GroupChatScreenState createState() => _GroupChatScreenState();
@@ -93,9 +95,9 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 247, 245, 237),
+      backgroundColor: Color.fromARGB(255, 252, 189, 237),
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 254, 89, 89),
+        backgroundColor: Colors.amber,
         title: Center(child: Text('Group Chat')),
       ),
       body: Column(

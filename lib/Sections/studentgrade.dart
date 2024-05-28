@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+///hy talabaka
 class GradesPage extends StatefulWidget {
   @override
   _GradesPageState createState() => _GradesPageState();
@@ -47,6 +48,30 @@ class _GradesPageState extends State<GradesPage> {
     }
   }
 
+  Future<double> _fetchTotalGrade() async {
+    double totalGrade = 0.0;
+
+    // Fetch grades from 'grades' collection
+    QuerySnapshot gradesSnapshot = await FirebaseFirestore.instance
+        .collection('grades')
+        .where('email', isEqualTo: currentUserEmail)
+        .get();
+    for (var doc in gradesSnapshot.docs) {
+      totalGrade += double.tryParse(doc['grade']) ?? 0.0;
+    }
+
+    // Fetch grades from 'hdpGrades' collection
+    QuerySnapshot hdpGradesSnapshot = await FirebaseFirestore.instance
+        .collection('hdpGrades')
+        .where('email', isEqualTo: currentUserEmail)
+        .get();
+    for (var doc in hdpGradesSnapshot.docs) {
+      totalGrade += double.tryParse(doc['grade']) ?? 0.0;
+    }
+
+    return totalGrade;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +81,7 @@ class _GradesPageState extends State<GradesPage> {
           'Your Grades',
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Colors.purple,
+        backgroundColor: Color.fromARGB(255, 237, 158, 251),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -64,11 +89,8 @@ class _GradesPageState extends State<GradesPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(height: 20),
-            StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('grades')
-                  .where('email', isEqualTo: currentUserEmail)
-                  .snapshots(),
+            FutureBuilder<double>(
+              future: _fetchTotalGrade(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return CircularProgressIndicator();
@@ -76,15 +98,13 @@ class _GradesPageState extends State<GradesPage> {
                 if (snapshot.hasError) {
                   return Text('Error fetching data');
                 }
-                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                if (!snapshot.hasData || snapshot.data == 0) {
                   return Text('No grades found for your email');
                 }
 
-                var gradeData = snapshot.data!.docs.first;
-                String storedGrade = gradeData['grade'];
-
-                // Calculate grade as a percentage of 100
-                double gradePercentage = double.parse(storedGrade) / 100;
+                double totalGrade = snapshot.data!;
+                double gradePercentage = totalGrade /
+                    200; // Assuming the total possible grade is 200 (100 from each collection)
 
                 return Column(
                   children: [
@@ -93,14 +113,14 @@ class _GradesPageState extends State<GradesPage> {
                       margin: EdgeInsets.symmetric(vertical: 10),
                       child: ListTile(
                         title: Text('Your Final Grade'),
-                        subtitle: Text(storedGrade),
-                        trailing: Text(
-                          '${(gradePercentage * 100).toStringAsFixed(2)}%',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.green,
-                          ),
-                        ),
+                        subtitle: Text(totalGrade.toStringAsFixed(2)),
+                        // trailing: Text(
+                        //   '${(gradePercentage * 100).toStringAsFixed(2)}%',
+                        //   style: TextStyle(
+                        //     fontWeight: FontWeight.bold,
+                        //     color: Colors.green,
+                        //   ),
+                        // ),
                       ),
                     ),
                   ],

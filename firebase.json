@@ -1,4 +1,6 @@
 {
+  
+  
   "hosting": {
     "public": "build/web",
     "ignore": [

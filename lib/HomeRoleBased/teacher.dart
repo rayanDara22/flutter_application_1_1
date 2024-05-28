@@ -25,9 +25,9 @@ class _TeacherState extends State<Teacher> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 207, 226, 233),
+      backgroundColor: Color.fromARGB(255, 88, 64, 175),
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 59, 20, 167),
+        backgroundColor: Colors.amber,
         title: Center(
           child: Text(
             "Teacher Home Page",

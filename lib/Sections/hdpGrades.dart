@@ -4,12 +4,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class GradingScreen2 extends StatefulWidget {
   @override
-  _GradingScreen2State createState() => _GradingScreen2State();
+  _GradingScreenState createState() => _GradingScreenState();
 }
 
-class _GradingScreen2State extends State<GradingScreen2> {
+class _GradingScreenState extends State<GradingScreen2> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  Map<String, String> grades = {}; // Changed to a map
+  Map<String, String> grades = {}; // Map to store grades
+  Map<String, String> currentGrades =
+      {}; // Map to store current grades for display
+
   String selectedGroup = '';
   late String teacherId;
 
@@ -34,7 +37,7 @@ class _GradingScreen2State extends State<GradingScreen2> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 69, 143, 218),
+        backgroundColor: Colors.amber,
         title: Center(
           child: Text(
             'Grading Screen',
@@ -51,14 +54,6 @@ class _GradingScreen2State extends State<GradingScreen2> {
             Navigator.pop(context);
           },
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.list),
-            onPressed: () {
-              _showGradesList(); // Show the list of groups and grades
-            },
-          ),
-        ],
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: _firestore.collection('groups').snapshots(),
@@ -115,69 +110,87 @@ class _GradingScreen2State extends State<GradingScreen2> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, setState) {
-            return AlertDialog(
-              title: Text('Select Grade for Emails in $groupName'),
-              content: Container(
-                color: Colors.white,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    for (var email in emails)
-                      ListTile(
-                        title: Text(email.toString()),
-                        trailing: DropdownButton<String>(
-                          value: grades[email] ?? 'Grades',
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              grades[email] = newValue!;
-                            });
-                          },
-                          items: <String>[
-                            'Grades',
-                            '40',
-                            '50',
-                            '60',
-                            '70',
-                            '80',
-                            '90',
-                            '100'
-                          ].map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                        ),
+        return FutureBuilder<Map<String, String>>(
+          future: _fetchGradesForEmails(emails),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
+            grades = snapshot.data!;
+            currentGrades =
+                Map.from(grades); // Initialize currentGrades with grades
+
+            return StatefulBuilder(
+              builder: (BuildContext context, setState) {
+                return AlertDialog(
+                  title: Text('Enter Grades for $groupName'),
+                  content: Container(
+                    color: Colors.white,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        for (var email in emails)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Text(email.toString()),
+                                ),
+                                SizedBox(
+                                  width: 80,
+                                  child: TextFormField(
+                                    initialValue: grades[email] ?? '',
+                                    decoration: InputDecoration(
+                                      hintText: 'Grade',
+                                    ),
+                                    keyboardType: TextInputType.number,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        grades[email] = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                Text(
+                                    'Current: ${currentGrades[email]}'), // Display current grade separately
+                              ],
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop(); // Close the dialog
+                      },
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor:
+                            Colors.red, // Set Cancel button text color
                       ),
+                      child: Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        _submitGrades(groupName);
+                        Navigator.of(context).pop(); // Close the dialog
+                      },
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor:
+                            Colors.blue, // Set Submit button text color
+                      ),
+                      child: Text('Submit'),
+                    ),
                   ],
-                ),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(); // Close the dialog
-                  },
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.red, // Set Cancel button text color
-                  ),
-                  child: Text('Cancel'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    _submitGrades(groupName);
-                    Navigator.of(context).pop(); // Close the dialog
-                  },
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor:
-                        Colors.blue, // Set Submit button text color
-                  ),
-                  child: Text('Submit'),
-                ),
-              ],
+                );
+              },
             );
           },
         );
@@ -185,11 +198,32 @@ class _GradingScreen2State extends State<GradingScreen2> {
     );
   }
 
+  Future<Map<String, String>> _fetchGradesForEmails(
+      List<dynamic> emails) async {
+    Map<String, String> fetchedGrades = {};
+
+    for (var email in emails) {
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('grades')
+          .where('email', isEqualTo: email)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        var doc = querySnapshot.docs.first;
+        fetchedGrades[email] = doc['grade'];
+      } else {
+        fetchedGrades[email] = '';
+      }
+    }
+
+    return fetchedGrades;
+  }
+
   void _submitGrades(String groupName) {
     // Iterate through the grades map to submit each email's grade
     grades.forEach((email, grade) {
-      if (grade != 'Grades') {
-        _firestore.collection('hdpGrades').add({
+      if (grade.isNotEmpty) {
+        _firestore.collection('grades').add({
           'groupName': groupName,
           'email': email,
           'grade': grade,
@@ -211,105 +245,6 @@ class _GradingScreen2State extends State<GradingScreen2> {
       ),
     );
   }
-
-  void _showGradesList() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Groups and Grades List'),
-          content: Container(
-            width: double.maxFinite,
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                return ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: constraints.maxHeight,
-                    minWidth: constraints.maxWidth,
-                  ),
-                  child: IntrinsicHeight(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          _buildGradesList(),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildGradesList() {
-    return StreamBuilder<QuerySnapshot>(
-      stream: _firestore.collection('grades').snapshots(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
-        }
-        if (snapshot.hasError) {
-          return Text('Error fetching data');
-        }
-        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return Text('No grades data available');
-        }
-
-        // Group grades by group name
-        Map<String, List<DocumentSnapshot>> groupedGrades = {};
-        snapshot.data!.docs.forEach((gradeData) {
-          String groupName = gradeData['groupName'];
-          groupedGrades.putIfAbsent(groupName, () => []);
-          groupedGrades[groupName]!.add(gradeData);
-        });
-
-        return ListView.builder(
-          shrinkWrap: true,
-          itemCount: groupedGrades.length,
-          itemBuilder: (context, index) {
-            String groupName = groupedGrades.keys.elementAt(index);
-            List<DocumentSnapshot> groupGrades = groupedGrades[groupName]!;
-
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Text(
-                    groupName,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: groupGrades.length,
-                  itemBuilder: (context, index) {
-                    var gradeData = groupGrades[index];
-                    String email = gradeData['email'];
-                    String grade = gradeData['grade'];
-
-                    return ListTile(
-                      title: Text(email),
-                      subtitle: Text('Grade: $grade'),
-                    );
-                  },
-                ),
-                Divider(),
-              ],
-            );
-          },
-        );
-      },
-    );
-  }
 }
 
 class GradesDetailScreen extends StatelessWidget {
@@ -321,12 +256,14 @@ class GradesDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 230, 204, 212),
       appBar: AppBar(
-        title: Text('Grades Detail Screen'),
+        backgroundColor: Colors.yellowAccent,
+        title: Center(child: Text('Grades Detail Screen')),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
-            .collection('hdpGrades')
+            .collection('grades')
             .where('groupName', isEqualTo: groupName)
             .snapshots(),
         builder: (context, snapshot) {
@@ -354,51 +291,13 @@ class GradesDetailScreen extends StatelessWidget {
               String grade = gradeData['grade'];
 
               return ListTile(
-                title: Text(email),
+                title: Text('Email: $email'),
                 subtitle: Text('Grade: $grade'),
-                trailing: IconButton(
-                  icon: Icon(Icons.edit),
-                  onPressed: () {
-                    _editGrade(
-                        context, gradeData.id); // Pass document ID for editing
-                  },
-                ),
               );
             },
           );
         },
       ),
-    );
-  }
-
-  void _editGrade(BuildContext context, String gradeId) {
-    // Implement your logic for editing the grade here
-    // You can navigate to a new screen or show a dialog for editing
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // Your edit grade dialog/widget
-        return AlertDialog(
-          title: Text('Edit Grade'),
-          content: Text('Implement your edit grade UI here'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                // Logic for saving edited grade
-                // You can use Firestore update method to update the grade
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: Text('Save'),
-            ),
-          ],
-        );
-      },
     );
   }
 }

@@ -27,23 +27,27 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
-        toolbarHeight: 80,
-        title: Text(
-          'Login ',
-          style: TextStyle(color: Colors.white, fontSize: 30),
+        toolbarHeight: 150,
+        title: Center(
+          child: Text(
+            'welcome to uhd ',
+            style: TextStyle(color: Colors.white, fontSize: 30),
+          ),
         ),
         centerTitle: true,
         flexibleSpace: Container(
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                const Color.fromARGB(255, 207, 226, 233),
-                Color.fromARGB(255, 167, 20, 20)
-              ],
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter,
-            ),
-          ),
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20)),
+              gradient: LinearGradient(
+                colors: [
+                  const Color.fromARGB(255, 207, 226, 233),
+                  Color.fromARGB(255, 167, 20, 20)
+                ],
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+              )),
         ),
       ),
       body: Container(

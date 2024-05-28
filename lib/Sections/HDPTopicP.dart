@@ -27,7 +27,7 @@ class _HDPTopicPState extends State<HDPTopicP> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 167, 20, 20),
+        backgroundColor: Colors.amber,
         title: Center(
             child: Text(
           "Teachers",
@@ -66,9 +66,9 @@ class _HDPTopicPState extends State<HDPTopicP> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
                   side: BorderSide(
-                      color: const Color.fromARGB(255, 8, 58, 99), width: 5.0),
+                      color: Color.fromARGB(255, 120, 8, 186), width: 5.0),
                 ),
-                color: const Color.fromARGB(255, 172, 197, 208),
+                color: Color.fromARGB(255, 8, 241, 222),
                 child: InkWell(
                   onTap: () async {
                     // Get the teacher's document

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Sections/teachertopic.dart';
 
+/// nawy mamostakan ba sheway grid pshan aya lai talaba bo away click bkan lasaryan w bcheta pagey topicakanian
 class TopicP extends StatefulWidget {
   const TopicP({Key? key}) : super(key: key);
 
@@ -26,7 +27,7 @@ class _TopicPState extends State<TopicP> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 167, 20, 20),
+        backgroundColor: Colors.amber,
         title: Center(
             child: Text(
           "Student",
@@ -65,9 +66,9 @@ class _TopicPState extends State<TopicP> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
                   side: BorderSide(
-                      color: const Color.fromARGB(255, 8, 58, 99), width: 5.0),
+                      color: Color.fromARGB(255, 255, 239, 98), width: 5.0),
                 ),
-                color: const Color.fromARGB(255, 172, 197, 208),
+                color: Color.fromARGB(255, 225, 173, 234),
                 child: InkWell(
                   onTap: () async {
                     // Get the teacher's document
@@ -98,7 +99,7 @@ class _TopicPState extends State<TopicP> {
                       teacherNames[index],
                       style: TextStyle(
                         fontSize: 18.0,
-                        color: const Color.fromARGB(255, 8, 58, 99),
+                        color: Color.fromARGB(255, 12, 101, 174),
                         fontWeight: FontWeight.bold,
                       ),
                     ),

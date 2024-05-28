@@ -7,7 +7,7 @@ class HODRequestPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.purple,
+        backgroundColor: Colors.amber,
         title: Center(
           child: Text(
             'HOD Requests',
@@ -92,7 +92,7 @@ class TopicRequestCard extends StatelessWidget {
           width: 2.0,
         ),
       ),
-      color: const Color.fromARGB(255, 172, 197, 208),
+      color: Color.fromARGB(255, 106, 210, 255),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -134,6 +134,7 @@ class TopicRequestCard extends StatelessWidget {
     );
   }
 
+//functiony wargrtni requestakaia
   void _handleAcceptRequest(
       BuildContext context, TopicRequestDetails request) async {
     // Fetch all existing topics
@@ -141,6 +142,7 @@ class TopicRequestCard extends StatelessWidget {
         await FirebaseFirestore.instance.collection('topics').get();
 
     // Calculate similarity with existing topics
+
     List<SimilarityResult> similarityResults = topicsSnapshot.docs.map((doc) {
       TopicDetails existingTopic = TopicDetails.fromSnapshot(doc);
       double similarityPercentage =
@@ -160,7 +162,8 @@ class TopicRequestCard extends StatelessWidget {
         .where((result) => result.similarityPercentage > 30)
         .toList();
 
-    // Save the similarity results to Firestore
+    // Save the similarity results to Firestor, similarityaka dyary aka bahaman idy requestaka w yaksar
+    // ayhene ba sheway dialog box pshani ayatawa
     await FirebaseFirestore.instance
         .collection('similarities')
         .doc(request.documentId)
@@ -250,6 +253,7 @@ class TopicDetails {
   }
 }
 
+// am basha similarityaka dyary aka w aynere bo similarities collection la buttoni acceptakaia run abe
 class SimilarityResult {
   final TopicDetails existingTopic;
   final double similarityPercentage;

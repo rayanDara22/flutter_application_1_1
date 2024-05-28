@@ -86,6 +86,8 @@ class RequestDetails {
     required this.status,
   });
 
+  //darhenany detaili requestaka la firebaseawa bo pshanyany ba sheway list
+
   factory RequestDetails.fromDocument(QueryDocumentSnapshot doc) {
     List<String> emails = [];
     if (doc['studentEmails'] is List) {
@@ -113,11 +115,11 @@ class RequestCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
         side: BorderSide(
-          color: const Color.fromARGB(255, 8, 58, 99),
+          color: Color.fromARGB(255, 164, 26, 206),
           width: 2.0,
         ),
       ),
-      color: const Color.fromARGB(255, 172, 197, 208),
+      color: Color.fromARGB(255, 148, 223, 255),
       child: ListTile(
         title: Text(
           'Student Emails: ${requestDetails.studentEmails.join(', ')}',

@@ -17,9 +17,9 @@ class _StudentState extends State<HeadOfDepartment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 172, 197, 208),
+      backgroundColor: Color.fromARGB(255, 154, 102, 190),
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 20, 20, 167),
+        backgroundColor: Colors.amber,
         title: Center(
           child: Text(
             "Head Of Department Home Page",

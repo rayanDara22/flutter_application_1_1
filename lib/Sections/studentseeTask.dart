@@ -28,9 +28,9 @@ class StudentTaskListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 227, 223, 254),
+      backgroundColor: Color.fromARGB(255, 194, 255, 201),
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 250, 144, 236),
+        backgroundColor: Colors.amber,
         title: Center(child: Text('My Tasks')),
       ),
       body: FutureBuilder<String?>(

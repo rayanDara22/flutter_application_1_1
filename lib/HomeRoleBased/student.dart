@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Auth/login.dart';
 import 'package:flutter_application_1/Sections/chat.dart';
 import 'package:flutter_application_1/Sections/studentgrade.dart';
-import 'package:flutter_application_1/Sections/studentgroupchat.dart';
 import 'package:flutter_application_1/Sections/studentseeTask.dart';
 import 'package:flutter_application_1/Sections/topics.dart';
 
@@ -18,9 +17,9 @@ class _StudentState extends State<Student> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 207, 226, 233),
+      backgroundColor: Color.fromARGB(255, 147, 117, 255),
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 59, 20, 167),
+        backgroundColor: Colors.amber,
         title: Center(
           child: Text(
             "Student Home Page",

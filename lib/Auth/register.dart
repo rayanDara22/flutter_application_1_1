@@ -44,23 +44,25 @@ class _RegisterState extends State<Register> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
-        toolbarHeight: 80,
+        toolbarHeight: 150,
         title: Text(
-          'Register ',
+          'welcome to uhd ',
           style: TextStyle(color: Colors.white, fontSize: 30),
         ),
         centerTitle: true,
-        //aw flexibla bo awaya ka appbaraka lla shweni xoia be ka scroll krd
         flexibleSpace: Container(
           decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(20),
+                  bottomRight: Radius.circular(20)),
               gradient: LinearGradient(
-            colors: [
-              const Color.fromARGB(255, 207, 226, 233),
-              Color.fromARGB(255, 167, 20, 20)
-            ],
-            begin: Alignment.bottomCenter,
-            end: Alignment.topCenter,
-          )),
+                colors: [
+                  const Color.fromARGB(255, 207, 226, 233),
+                  Color.fromARGB(255, 167, 20, 20)
+                ],
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+              )),
         ),
       ),
       backgroundColor: Color.fromARGB(255, 207, 226, 233),
@@ -68,7 +70,7 @@ class _RegisterState extends State<Register> {
         child: Column(
           children: <Widget>[
             Container(
-              color: Color.fromARGB(255, 207, 226, 233),
+              color: Color.fromARGB(255, 177, 234, 255),
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               child: SingleChildScrollView(
@@ -135,7 +137,7 @@ class _RegisterState extends State<Register> {
                               ),
                             ),
 
-                            //VALIDATEY INPUTAKA AKA
+                            //VALIDATEY INPUTAKA AKA ka fieldaka batal be ya xalat
                             validator: (value) {
                               if (value!.length == 0) {
                                 return "Email cannot be empty";

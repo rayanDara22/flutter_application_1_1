@@ -89,9 +89,9 @@ class _TeacherGroupChatScreenState extends State<TeacherGroupChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 209, 208, 208),
+      backgroundColor: Color.fromARGB(255, 255, 225, 254),
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 106, 181, 241),
+        backgroundColor: Colors.amber,
         title: Center(child: Text('Teacher Group Chat')),
       ),
       body: Column(

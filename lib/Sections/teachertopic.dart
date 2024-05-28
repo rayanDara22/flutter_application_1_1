@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+// topic w descriptioni har mamostayak pshan aya lai talaba w atwann request bnern
 class TeacherTopicsPage extends StatelessWidget {
   final String teacherId;
 
@@ -12,6 +13,7 @@ class TeacherTopicsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.amber,
         title: Text(
           'Teacher Topics',
           style: TextStyle(color: Colors.white),
@@ -169,10 +171,9 @@ class _TopicCardState extends State<TopicCard> {
       margin: EdgeInsets.all(8.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
-        side:
-            BorderSide(color: const Color.fromARGB(255, 8, 58, 99), width: 2.0),
+        side: BorderSide(color: Color.fromARGB(255, 253, 250, 31), width: 2.0),
       ),
-      color: const Color.fromARGB(255, 172, 197, 208),
+      color: Color.fromARGB(255, 220, 3, 232),
       child: ExpansionTile(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
