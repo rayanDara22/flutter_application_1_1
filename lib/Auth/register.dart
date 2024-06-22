@@ -3,8 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'login.dart';
-// import 'model.dart';
 
+// import 'model.dart';
+///dd
+///
 class Register extends StatefulWidget {
   @override
   _RegisterState createState() => _RegisterState();
