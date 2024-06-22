@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'login.dart';
 
 // import 'model.dart';
-///dd
-///
+//daliaaa
 class Register extends StatefulWidget {
   @override
   _RegisterState createState() => _RegisterState();
@@ -47,9 +46,11 @@ class _RegisterState extends State<Register> {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         toolbarHeight: 150,
-        title: Text(
-          'welcome to uhd ',
-          style: TextStyle(color: Colors.white, fontSize: 30),
+        title: Center(
+          child: Text(
+            'welcome to uhd ',
+            style: TextStyle(color: Colors.white, fontSize: 30),
+          ),
         ),
         centerTitle: true,
         flexibleSpace: Container(
